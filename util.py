@@ -12,7 +12,7 @@ def new_logger(name="logger"):
 
     # create formatter
     formatter = logging.Formatter(
-        '%(asctime)s - %(levelname)s : %(func)s(%(lineno)s) - %(message)s')
+        '%(asctime)s - %(levelname)s - %(module)s.py : %(funcName)s():%(lineno)s - %(message)s')
 
     # add formatter to ch
     ch.setFormatter(formatter)
