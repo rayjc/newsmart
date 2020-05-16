@@ -175,14 +175,17 @@ class Saves(db.Model):
 
     __tablename__ = "saves"
 
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     # delete record if any parents get removed
     user_id = db.Column(db.Integer,
-                        db.ForeignKey('users.id', ondelete='CASCADE'),
-                        primary_key=True)
+                        db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     article_id = db.Column(db.Integer,
-                           db.ForeignKey('articles.id', ondelete='CASCADE'),
-                           primary_key=True)
+                           db.ForeignKey('articles.id', ondelete='CASCADE'), nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow())
+
+    __table_args__ = (
+        db.UniqueConstraint('user_id', 'article_id', name='unique_bookmark'),
+    )
 
     @classmethod
     def new(cls, user_id, article_id, timestamp=None):
@@ -207,6 +210,23 @@ class Saves(db.Model):
             return None
 
         return new_saves
+
+    @classmethod
+    def remove(cls, saves_id):
+        """
+        Remove saves object and commit to db.
+        Return True if successful, otherwise return False.
+        """
+        saves = cls.query.get_or_404(saves_id)
+
+        try:
+            db.session.delete(saves)
+            db.session.commit()
+        except SQLAlchemyError:
+            logger.critical(f'Failed to delete {saves} from database.')
+            return False
+        
+        return True
 
     def __repr__(self):
         return (f"<Saves: user_id={self.user_id} article_id='{self.article_id}'>")
