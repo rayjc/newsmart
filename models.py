@@ -160,6 +160,18 @@ class Article(db.Model):
                 f"timestamp={self.timestamp} "
                 f"has_summary={'yes' if self.summary else 'no'}>")
 
+    def serialize(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "summary": self.summary,
+            "content": self.content,
+            "url": self.url,
+            "source": self.source,
+            "img_url": self.img_url,
+            "timestamp": self.timestamp.isoformat(),
+        }
+
 
 class Tag(db.Model):
 
@@ -260,6 +272,14 @@ class Saves(db.Model):
 
     def __repr__(self):
         return (f"<Saves: user_id={self.user_id} article_id='{self.article_id}'>")
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "article_id": self.article_id,
+            "timestamp": self.timestamp.isoformat(),
+        }
 
 
 class ArticleTag(db.Model):
