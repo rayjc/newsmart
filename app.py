@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from forms import ArticleForm, LoginForm, RegisterForm, UserEditForm
 from logger import logger
-from models import Article, User, connect_db
+from models import Article, Saves, User, connect_db
 from news_api_session import NewsApiSession
 from nlu_api_session import NLUApiSession
 from util import CURR_USER_KEY, do_login, do_logout, login_required
@@ -159,7 +159,9 @@ def signup_view():
         return redirect("/")
 
     else:
-        return render_template('signup.html', form=form, form_id="signup-form", submit_button="Sign up!")
+        return render_template(
+            'signup.html', form=form, form_id="signup-form", submit_button="Sign up!"
+        )
 
 
 @app.route('/user', methods=['GET', 'POST'])
@@ -182,12 +184,14 @@ def user_profile_view():
 
     bookmarks = g.user.articles
 
-    return render_template("user_profile.html", form=form, submit_button="Update", bookmarks=bookmarks)
+    return render_template(
+        "user_profile.html", form=form, submit_button="Update", bookmarks=bookmarks
+    )
 
 
 # RESTful APIs
 @app.route('/api/articles', methods=['POST'])
-# @login_required(isJSON=True)
+# @login_required(isJSON=True)  TODO: uncomment
 def create_article():
     """
     Create an article object and store on db.
@@ -212,6 +216,7 @@ def create_article():
 
 
 @app.route('/api/saves', methods=['POST'])
+# @login_required(isJSON=True)  TODO: uncomment
 def create_bookmark():
     """
     Create a relationship row between user and article.
@@ -219,31 +224,42 @@ def create_bookmark():
     Data: article_id
     Note: the article should have been created
     """
+    article_id = request.json.get('article_id')
+    if article_id:
+        bookmark = Saves.new(g.user.id, article_id)
+        return (
+            (jsonify({"bookmark": bookmark.serialize()}), 201)
+            if bookmark else
+            (jsonify({
+                "bookmark": 
+                    {"message": ("Failed to create "
+                                 f"<Bookmark: article_id={article_id}, "
+                                 f"user_id={g.user.id}>.")
+                    }
+            }), 400)
+        )
 
-    # make sure user is logged in
-
-    # create saves object and save
-
-    # return JSON response
-    return (jsonify({"saves": {"message": "testing"}}), 201)
+    return (jsonify({"bookmark": {"message": "Please provide article_id"}}), 400)
 
 
 @app.route('/api/saves/<int:saves_id>', methods=['DELETE'])
+# @login_required(isJSON=True)  TODO: uncomment
 def remove_bookmark(saves_id):
     """
     Remove a relationship row between user and article.
     Return a message in JSON response.
     """
+    if Saves.remove(saves_id):
+        return (jsonify(
+            {"bookmark": {"message": "Deleted.", "id": saves_id}}
+        ), 200)
 
-    # make sure is logged in
-
-    # remove bookmark from db
-
-    # return JSON response
-    return (jsonify({"message": "testing"}), 200)
+    return (jsonify(
+        {"bookmark": {"message": f"Failed to delete bookmark."}}
+    ), 200)
 
 
-@app.route('api/tags', methods=['POST'])
+@app.route('/api/tags', methods=['POST'])
 def create_tags():
     """
     Extract tags based on url and save them to database;
@@ -254,3 +270,4 @@ def create_tags():
     # TODO: disable button on frontend after click since this takes awhile
 
     # create tags and associate them with this article
+    return (jsonify({"message": "testing"}), 200)

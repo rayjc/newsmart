@@ -242,9 +242,9 @@ class Saves(db.Model):
         try:
             db.session.add(new_saves)
             db.session.commit()
-        except IntegrityError:
+        except IntegrityError as e:
             logger.error(
-                f"Cannot add {new_saves} to database; URL already exists."
+                f"Cannot add {new_saves} to database. {e.orig.pgerror}"
             )
             return None
         except SQLAlchemyError:
