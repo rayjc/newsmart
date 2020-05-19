@@ -5,7 +5,7 @@ from flask import (Flask, Response, abort, flash, g, jsonify, redirect,
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
-from forms import LoginForm, RegisterForm
+from forms import LoginForm, RegisterForm, UserEditForm
 from logger import logger
 from models import User, connect_db
 from news_api_session import NewsApiSession
@@ -162,8 +162,9 @@ def signup_view():
         return render_template('signup.html', form=form, form_id="signup-form", submit_button="Sign up!")
 
 
-@app.route('/user')
-def user_profile_view(username, methods=['GET', 'POST']):
+@app.route('/user', methods=['GET', 'POST'])
+@login_required('/login')
+def user_profile_view():
     """
     User profile page:
         -Shows user information
@@ -171,10 +172,17 @@ def user_profile_view(username, methods=['GET', 'POST']):
         -list of articles user has saved/bookmarked with keywords extracted
         (These article keywords are used for recommendation)
     """
+    form = UserEditForm(username=g.user.username)
 
-    # validate data for patch request
+    if form.validate_on_submit():
+        user = User.update(g.user.username, form.username.data, form.password.data)
+        if user:
+            flash("Username updated.", "success")
+        return redirect(url_for('user_profile_view'))
 
-    return Response("User profile form and saved articles")
+    bookmarks = g.user.articles
+
+    return render_template("user_profile.html", form=form, submit_button="Update", bookmarks=bookmarks)
 
 
 # RESTful APIs

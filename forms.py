@@ -33,3 +33,15 @@ class RegisterForm(FlaskForm):
     last_name = StringField(
         'Last Name', validators=[DataRequired(), InputRequired()]
     )
+
+
+class UserEditForm(FlaskForm):
+    """Form for editing users."""
+    username = StringField(
+        'Username',
+        validators=[DataRequired(), InputRequired(), Length(min=3)]
+    )
+    password = PasswordField(
+        'Verify Password',
+        validators=[DataRequired(), InputRequired(), Length(min=3)]
+    )

@@ -24,7 +24,7 @@ class User(db.Model):
     last_name = db.Column(db.String(30), nullable=False)
 
     saves = db.relationship('Saves', backref='user', passive_deletes=True)
-    articles = db.relationship('Article', secondary="saves")
+    articles = db.relationship('Article', secondary="saves", lazy="joined")
 
     bcrypt = Bcrypt()
 
@@ -48,14 +48,40 @@ class User(db.Model):
             db.session.add(new_user)
             db.session.commit()
         except IntegrityError:
-            flash("Username/email already exist.")
+            flash("Username/email already exist.", "danger")
             return None
         except SQLAlchemyError:
             logger.critical(f'Failed to create {new_user} on database.')
-            flash(f"Failed to create '{username}'")
+            flash(f"Failed to create '{username}'", "danger")
             return None
 
         return new_user
+
+    @classmethod
+    def update(cls, old_username, new_username, password):
+        """
+        Update user with specified id & commit to db.
+        Return user object if successful, otherwise return None.
+        """
+        user = User.authenticate(old_username, password)
+        if not user:
+            flash("Username and password do not match!", 'danger')
+            return None
+        
+        user.username = new_username
+
+        try:
+            db.session.add(user)
+            db.session.commit()
+        except IntegrityError:
+            flash("Username already exists.", "danger")
+            return None
+        except SQLAlchemyError:
+            logger.critical(f'Failed to update {user} on database.')
+            flash(f"Failed to update '{username}'", "danger")
+            return None
+
+        return user
 
     @classmethod
     def authenticate(cls, username, pwd):
@@ -94,12 +120,14 @@ class Article(db.Model):
     url = db.Column(db.Text, nullable=False, unique=True)
     source = db.Column(db.Text, nullable=False)
     img_url = db.Column(db.Text, nullable=False, default=DEFAULT_IMG_URL)
+    timestamp = db.Column(db.DateTime, nullable=False,
+                          default=datetime.datetime.utcnow())
 
     saves = db.relationship('Saves', backref='article', passive_deletes=True)
     articles_tags = db.relationship('ArticleTag', backref='article', passive_deletes=True)
 
     @classmethod
-    def new(cls, title, content, url, source, summary=None, img_url=None):
+    def new(cls, title, content, url, source, summary=None, img_url=None, timestamp=None):
         """
         Create new article object and commit to db.
         Return article object if successful, otherwise return None.
@@ -108,7 +136,7 @@ class Article(db.Model):
 
         new_article = cls(
             title=title, summary=summary, content=content,
-            url=url, source=source, img_url=img_url
+            url=url, source=source, img_url=img_url, timestamp=timestamp
         )
 
         try:
@@ -128,6 +156,7 @@ class Article(db.Model):
                 f"title={self.title if len(self.title) < 20 else '...'} "
                 f"url={self.url if len(self.url) < 20 else '...'} "
                 f"source={self.source} "
+                f"timestamp={self.timestamp} "
                 f"has_summary={'yes' if self.summary else 'no'}")
 
 

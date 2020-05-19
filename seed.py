@@ -28,7 +28,8 @@ articles = [
         has restarted its California factory in violation of local government orders...""",
         "https://www.cbc.ca/news/world/musk-reopens-tesla-factory-1.5565269",
         "CBC", summary="...",
-        img_url="https://i.cbc.ca/1.5565297.1589234487!/cpImage/httpImage/image.jpg_gen/derivatives/16x9_780/virus-outbreak-tesla.jpg"),
+        img_url="https://i.cbc.ca/1.5565297.1589234487!/cpImage/httpImage/image.jpg_gen/derivatives/16x9_780/virus-outbreak-tesla.jpg",
+        timestamp=(datetime.datetime.today() - datetime.timedelta(days=10))),
     Article.new(
         "Shanghai Disneyland reopens with anti-virus controls - The Associated Press",
         """SHANGHAI (AP) Visitors in face masks streamed into Shanghai Disneyland as the 
