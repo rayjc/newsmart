@@ -1,7 +1,7 @@
 import os
 
-from flask import (Flask, Response, abort, g, jsonify, render_template,
-                   request, session)
+from flask import (Flask, Response, abort, g, jsonify, redirect,
+                   render_template, request, session, url_for)
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
@@ -82,12 +82,16 @@ def search_view():
     """
     Search result page detailing the articles found with query parameter.
     """
-    term = request.args.get('q')
+    phrase = request.args.get('q')
+    
+    # do not allow empty search
+    if not phrase:
+        return redirect(url_for('home_view'))
 
-    # TODO: SQLAlchemy-Searchable; update models
     # call search
+    articles = news_api.search_articles(phrase)
 
-    return Response(f"List of articles related to '{term}'")
+    return render_template('search.html', phrase=phrase, articles=articles)
 
 
 @app.route('/login', methods=['GET', 'POST'])
