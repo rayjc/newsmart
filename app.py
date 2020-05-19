@@ -5,9 +5,9 @@ from flask import (Flask, Response, abort, flash, g, jsonify, redirect,
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
-from forms import LoginForm, RegisterForm, UserEditForm
+from forms import ArticleForm, LoginForm, RegisterForm, UserEditForm
 from logger import logger
-from models import User, connect_db
+from models import Article, User, connect_db
 from news_api_session import NewsApiSession
 from nlu_api_session import NLUApiSession
 from util import CURR_USER_KEY, do_login, do_logout, login_required
@@ -187,24 +187,28 @@ def user_profile_view():
 
 # RESTful APIs
 @app.route('/api/articles', methods=['POST'])
+# @login_required(isJSON=True)
 def create_article():
     """
     Create an article object and store on db.
     Return article object in JSON response.
     Data: title, content, url, source, summary, img_url
     """
+    data = request.json
+    form = ArticleForm(**data, meta={'csrf': False})
 
-    # make sure user is logged in
+    if form.validate():
+        article = Article.query.filter(Article.url == form.url.data).one_or_none()
+        if article:
+            # article object has been created already
+            return (jsonify({"article": article.serialize()}), 200)
+        else:
+            # create new article object and save
+            new_article = Article.new(**form.data)
+            return (jsonify({"article": new_article.serialize()}), 201)
 
-    # return 200 if article object has been created already
-
-    # create new article object and save
-
-    # extract keywords via 3rd party API
-    # create tags and associate them with this article
-
-    # return JSON response including article object
-    return (jsonify({"article": {"message": "testing"}}), 201)
+    errors = {"errors": form.errors}
+    return (jsonify(errors), 400)
 
 
 @app.route('/api/saves', methods=['POST'])
@@ -212,7 +216,7 @@ def create_bookmark():
     """
     Create a relationship row between user and article.
     Return JSON response.
-    Data: user_id, article_id
+    Data: article_id
     Note: the article should have been created
     """
 
@@ -237,3 +241,16 @@ def remove_bookmark(saves_id):
 
     # return JSON response
     return (jsonify({"message": "testing"}), 200)
+
+
+@app.route('api/tags', methods=['POST'])
+def create_tags():
+    """
+    Extract tags based on url and save them to database;
+    return lists of tag objects created in JSON response.
+    Data: article_url
+    """
+    # extract keywords via 3rd party API
+    # TODO: disable button on frontend after click since this takes awhile
+
+    # create tags and associate them with this article

@@ -4,6 +4,38 @@ from wtforms.validators import (URL, DataRequired, Email, InputRequired,
                                 Length, Optional)
 
 
+class ArticleForm(FlaskForm):
+    """Form for adding articles."""
+    title = StringField(
+        'Title',
+        validators=[DataRequired(), InputRequired()]
+    )
+    summary = StringField(
+        'Summary',
+        validators=[Optional()]
+    )
+    content = StringField(
+        'Content',
+        validators=[DataRequired(), InputRequired()]
+    )
+    url = StringField(
+        'URL',
+        validators=[DataRequired(), InputRequired(), URL()]
+    )
+    source = StringField(
+        'Source',
+        validators=[DataRequired(), InputRequired()]
+    )
+    img_url = StringField(
+        'Image URL',
+        validators=[Optional(), URL()]
+    )
+    timestamp = StringField(
+        'Published At',
+        validators=[DataRequired(), InputRequired()]
+    )
+
+
 class LoginForm(FlaskForm):
     """Login form."""
     username = StringField(

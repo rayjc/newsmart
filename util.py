@@ -1,8 +1,7 @@
 import logging
-
 from functools import wraps
 
-from flask import flash, g, session, redirect
+from flask import flash, g, jsonify, redirect, session
 
 CURR_USER_KEY = "curr_user"
 
@@ -19,11 +18,16 @@ def do_logout():
         flash("Logged out!", "success")
 
 
-def login_required(redirect_url="/"):
+def login_required(redirect_url="/", isJSON=False):
     def _login_required(function):
         @wraps(function)
         def wrapper(*args, **kwargs):
             if not g.user:
+                if isJSON:
+                    return (
+                        jsonify({"message": "Permission denied. Please log in."}),
+                        401
+                    )
                 flash("Access unauthorized.", "danger")
                 return redirect(redirect_url)
 
