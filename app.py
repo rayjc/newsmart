@@ -1,10 +1,11 @@
 import os
 
-from flask import (Flask, Response, abort, g, jsonify, redirect,
+from flask import (Flask, Response, abort, flash, g, jsonify, redirect,
                    render_template, request, session, url_for)
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
+from forms import LoginForm, RegisterForm
 from logger import logger
 from models import User, connect_db
 from news_api_session import NewsApiSession
@@ -99,27 +100,66 @@ def login_view():
     """
     Login page for accepting login form submission.
     """
+    if g.user:
+        return redirect(url_for('home_view'))
+
+    form = LoginForm()
 
     # validate form
+    if form.validate_on_submit():
+        user = User.authenticate(form.username.data,
+                                 form.password.data)
 
-    # log user in via session
-    
-    return Response(f"Login form")
+        if user:
+            do_login(user)
+            flash(f"Hello, {user.username}!", "success")
+            return redirect(url_for('home_view'))
+
+        flash("Username and password do not match!", 'danger')
+
+    return render_template(
+        'login.html', form=form, form_id="login-form", submit_button="Log in"
+    )
+
+
+@app.route('/logout')
+def logout_view():
+    """Handle logout of user."""
+    do_logout()
+    return redirect(url_for('login_view'))
 
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup_view():
     """
-    Sign up page for accepting signup form submission.
+    Handle user signup.
+    Create new user and add to DB. Redirect to home page.
+    If form not valid, present form.
+    If the there already is a user with that username: flash message
+    and re-present form.
     """
+    if g.user:
+        return redirect(url_for('home_view'))
 
-    # validate form
+    form = RegisterForm()
 
-    # create and register user
+    if form.validate_on_submit():
+        user = User.register(
+            username=form.username.data,
+            password=form.password.data,
+            email=form.email.data,
+            first_name=form.first_name.data,
+            last_name=form.last_name.data
+        )
+        
+        if user:
+            do_login(user)
+            flash(f"Hello, {user.username}!", "success")
 
-    # log user in via session
+        return redirect("/")
 
-    return Response(f"Signup from")
+    else:
+        return render_template('signup.html', form=form, form_id="signup-form", submit_button="Sign up!")
 
 
 @app.route('/user')
