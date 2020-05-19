@@ -24,7 +24,8 @@ class User(db.Model):
     last_name = db.Column(db.String(30), nullable=False)
 
     saves = db.relationship('Saves', backref='user', passive_deletes=True)
-    articles = db.relationship('Article', secondary="saves", lazy="joined")
+    articles = db.relationship('Article', secondary="saves", lazy="joined",
+                               backref='users')
 
     bcrypt = Bcrypt()
 
@@ -157,7 +158,7 @@ class Article(db.Model):
                 f"url={self.url if len(self.url) < 20 else '...'} "
                 f"source={self.source} "
                 f"timestamp={self.timestamp} "
-                f"has_summary={'yes' if self.summary else 'no'}")
+                f"has_summary={'yes' if self.summary else 'no'}>")
 
 
 class Tag(db.Model):
@@ -168,7 +169,7 @@ class Tag(db.Model):
     keyword = db.Column(db.String(32), nullable=False, unique=True)
 
     articles_tags = db.relationship('ArticleTag', backref='tag', passive_deletes=True)
-    articles = db.relationship('Article', secondary="articles_tags")
+    articles = db.relationship('Article', secondary="articles_tags", backref='tags')
 
     @classmethod
     def new(cls, keyword):

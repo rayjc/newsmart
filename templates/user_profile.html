@@ -29,9 +29,16 @@
   <ul>
     {% for article in bookmarks %}
       <li>
-        <a target="_blank" rel="noopener noreferrer" href="{{article['url']}}">
-          {{article['title']}} - {{article['timestamp']}}
-        </a>
+        <div>
+          <a target="_blank" rel="noopener noreferrer" href="{{article['url']}}">
+            {{article['title']}} - {{article['timestamp']}}
+          </a>
+        </div>
+        <div>
+          {% for tag in article.tags %}
+          <span class="badge badge-info">{{tag.keyword}}</span>
+          {% endfor %}
+        </div>
       </li>
     {% endfor %}
   </ul>
