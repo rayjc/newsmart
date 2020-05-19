@@ -1,5 +1,38 @@
 import logging
 
+from functools import wraps
+
+from flask import flash, g, session, redirect
+
+CURR_USER_KEY = "curr_user"
+
+
+def do_login(user):
+    """Log in user."""
+    session[CURR_USER_KEY] = user.id
+
+
+def do_logout():
+    """Logout user. Flash logout message."""
+    if CURR_USER_KEY in session:
+        del session[CURR_USER_KEY]
+        flash("Logged out!", "success")
+
+
+def login_required(redirect_url="/"):
+    def _login_required(function):
+        @wraps(function)
+        def wrapper(*args, **kwargs):
+            if not g.user:
+                flash("Access unauthorized.", "danger")
+                return redirect(redirect_url)
+
+            # logged in;
+            retval = function(*args, **kwargs)
+            return retval
+        return wrapper
+    return _login_required
+
 
 def new_logger(name="logger"):
     # create logger

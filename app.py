@@ -1,11 +1,15 @@
 import os
 
-from flask import Flask, abort, Response, request, jsonify
+from flask import (Flask, Response, abort, g, jsonify, render_template,
+                   request, session)
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from logger import logger
-from models import connect_db
+from models import User, connect_db
+from news_api_session import NewsApiSession
+from nlu_api_session import NLUApiSession
+from util import CURR_USER_KEY, do_login, do_logout, login_required
 
 app = Flask(__name__)
 
@@ -21,13 +25,33 @@ toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
 
+news_api = NewsApiSession()
+nlp_api = NLUApiSession()
+
+
+@app.before_request
+def add_user_to_g():
+    """
+    If we're logged in, add curr user to Flask global before making
+    any request so each request has access to current user object.
+    Note: g is an application global context that lasts for
+        one request/response cycle unlike the session which
+        remains and persists for mulitple requests/respones.
+    """
+    g.user = (
+        User.query.get(session[CURR_USER_KEY])
+        if CURR_USER_KEY in session
+        else None
+    )
+
 
 @app.route('/')
 def home_view():
     """
     Home page with viewable/hidden sections for authenicated users.
     """
-    return Response("Home Page")
+    top_articles = news_api.get_top_articles()
+    return render_template("home.html", top_articles=top_articles)
 
 
 @app.route('/category')
