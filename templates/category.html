@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %} - Category {% endblock %}
+
+{% block content %}
+<h1 class="text-center">Category</h1>
+<div>
+  <ul>
+    {% for category in categories %}
+    <li>
+      <a href="{{url_for('category_detail_view', category=category)}}">{{category|capitalize}}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<hr>
+<div class="text-center">
+  <a href="{{url_for('home_view')}}">Home</a>
+</div>
+{% endblock %}

@@ -11,6 +11,9 @@ from news_api_session import NewsApiSession
 from nlu_api_session import NLUApiSession
 from util import CURR_USER_KEY, do_login, do_logout, login_required
 
+NEWS_CATEGORIES = ("business", "entertainment", "general",
+                   "health", "science", "sports", "technology")
+
 app = Flask(__name__)
 
 # flask config setup
@@ -59,7 +62,7 @@ def category_view():
     """
     Categories page showing list of available categories. (Optional)
     """
-    return Response("List of available categories")
+    return render_template('category.html', categories=NEWS_CATEGORIES)
 
 
 @app.route('/category/<string:category>')
@@ -67,11 +70,11 @@ def category_detail_view(category):
     """
     Category detail page showing list of top articles under specified category.
     """
-    if (category.lower() not in ("business", "entertainment", "general",
-                                 "health", "science", "sports", "technology")):
+    if (category.lower() not in NEWS_CATEGORIES):
         abort(404)
 
-    return Response(f"List of top articles under {category}")
+    articles = news_api.get_top_articles(category=category)
+    return render_template('category_detail.html', articles=articles, category=category)
 
 
 @app.route('/search')

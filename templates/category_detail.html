@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %} - {{category|capitalize}} {% endblock %}
+
+{% block content %}
+<h1 class="text-center">{{category|capitalize}}</h1>
+<div>
+  <ul>
+    {% for article in articles %}
+    <li>
+      <a target="_blank" rel="noopener noreferrer" href="{{article['url']}}">{{article['title']}} -
+        {{article['publishedAt']}}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+
+<hr>
+<div class="text-center">
+  <a href="{{url_for('home_view')}}">Home</a>
+</div>
+{% endblock %}
