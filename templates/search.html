@@ -7,10 +7,7 @@
 <div>
   <ul>
     {% for article in articles %}
-    <li>
-      <a target="_blank" rel="noopener noreferrer" href="{{article['url']}}">{{article['title']}} -
-        {{article['publishedAt']}}</a>
-    </li>
+      {% include 'article_item.html' %}
     {% endfor %}
   </ul>
 </div>

@@ -11,7 +11,8 @@ from logger import logger
 from models import Article, ArticleTag, Saves, Tag, User, connect_db
 from news_api_session import NewsApiSession
 from nlu_api_session import NLUApiSession
-from util import CURR_USER_KEY, do_login, do_logout, login_required
+from util import (CURR_USER_KEY, do_login, do_logout, get_bookmarked_urls,
+                  login_required)
 
 NEWS_CATEGORIES = ("business", "entertainment", "general",
                    "health", "science", "sports", "technology")
@@ -56,7 +57,12 @@ def home_view():
     Home page with viewable/hidden sections for authenicated users.
     """
     top_articles = news_api.get_top_articles()
-    return render_template("home.html", top_articles=top_articles)
+    bookmarked_urls = get_bookmarked_urls()
+
+    return render_template(
+        "home.html", top_articles=top_articles,
+        bookmarked_urls=bookmarked_urls
+    )
 
 
 @app.route('/category')
@@ -93,7 +99,12 @@ def search_view():
     # call search
     articles = news_api.search_articles(phrase)
 
-    return render_template('search.html', phrase=phrase, articles=articles)
+    bookmarked_urls = get_bookmarked_urls()
+
+    return render_template(
+        'search.html', phrase=phrase, articles=articles,
+        bookmarked_urls=bookmarked_urls
+    )
 
 
 @app.route('/login', methods=['GET', 'POST'])

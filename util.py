@@ -18,6 +18,16 @@ def do_logout():
         flash("Logged out!", "success")
 
 
+def get_bookmarked_urls():
+    """Return a set of article urls that user has bookmarked"""
+    bookmarked_urls = (
+        {article.url for article in g.user.articles}
+        if g.user else
+        {}
+    )
+    return bookmarked_urls
+
+
 def login_required(redirect_url="/", isJSON=False):
     def _login_required(function):
         @wraps(function)
