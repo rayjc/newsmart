@@ -12,6 +12,38 @@
 </head>
 
 <body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a href="/" class="navbar-brand">
+          <span>NewSmart</span>
+        </a>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        {% if request.endpoint != None %}
+        <li class="nav-item">
+          <form class="form-inline" action="{{url_for('search_view')}}">
+            <input name="q" class="form-control" placeholder="Search News" id="search">
+            <button class="btn btn-default">
+              <span class="fa fa-search"></span>
+            </button>
+          </form>
+        </li>
+        {% endif %}
+        {% if not g.user %}
+        <li class="nav-item"><a class="nav-link" href="{{url_for('signup_view')}}">Sign up</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{url_for('login_view')}}">Log in</a></li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('user_profile_view')}}">
+            {{g.user.username}}
+          </a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="{{url_for('logout_view')}}">Log out</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
   {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
   {% for category, msg in messages %}
