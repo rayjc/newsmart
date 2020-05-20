@@ -302,6 +302,7 @@ def create_tags():
 
 
 @app.route('/api/articletag', methods=['POST'])
+# @login_required(isJSON=True)  TODO: uncomment
 def create_article_tag():
     """
     Create association between specified article and tag;
@@ -323,3 +324,26 @@ def create_article_tag():
 
     errors = {"errors": form.errors}
     return (jsonify(errors), 400)
+
+
+@app.route('/api/usercategory', methods=['PUT'])
+# @login_required(isJSON=True)  TODO: uncomment
+def update_user_category():
+    """
+    Update all user categories;
+    return list of category objects in JSON.
+    Data: list of category ids
+    """
+    category_ids = request.json.get('category_ids')
+    if (not category_ids
+            or not all(isinstance(category_id, int) for category_id in category_ids)):
+        return (jsonify({"errors": {"category_ids": "Please provide valid IDs."}}),
+                400)
+
+    UserCategory.remove_user(g.user.id)
+    user_categories = [
+        UserCategory.new(g.user.id, category_id).serialize()
+        for category_id in category_ids
+    ]
+
+    return (jsonify({"users_categories": user_categories}))

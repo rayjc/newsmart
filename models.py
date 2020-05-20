@@ -445,10 +445,29 @@ class UserCategory(db.Model):
         Remove user-category association object and commit to db.
         Return True if successful, otherwise return False.
         """
-        user_category = cls.query.filter(user_id, category_id).first_or_404()
+        user_category = cls.query.filter(
+            UserCategory.user_id == user_id, UserCategory.category_id == category_id
+        ).first_or_404()
 
         try:
             db.session.delete(user_category)
+            db.session.commit()
+        except SQLAlchemyError:
+            logger.critical(f'Failed to delete {user_category} from database.')
+            db.session.rollback()
+            return False
+        
+        return True
+
+    @classmethod
+    def remove_user(cls, user_id):
+        """
+        Remove user-category association object and commit to db.
+        Return True if successful, otherwise return False.
+        """
+        try:
+            user_category = cls.query.filter(
+                                UserCategory.user_id == user_id).delete()
             db.session.commit()
         except SQLAlchemyError:
             logger.critical(f'Failed to delete {user_category} from database.')
@@ -462,6 +481,7 @@ class UserCategory(db.Model):
     
     def serialize(self):
         return {
+            "id": self.id,
             "user_id": self.user_id,
             "category_id": self.category_id,
         }
