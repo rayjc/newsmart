@@ -11,11 +11,8 @@ from logger import logger
 from models import (
     NEWS_CATEGORIES, Article, ArticleTag, Category, Saves, Tag, User,
     UserCategory, connect_db)
-from news_api_session import NewsApiSession
-from nlu_api_session import NLUApiSession
 from newsmart import NewSmart
-from util import (CURR_USER_KEY, do_login, do_logout, get_bookmarked_urls,
-                  login_required)
+from util import CURR_USER_KEY, do_login, do_logout, login_required
 
 app = Flask(__name__)
 
@@ -31,8 +28,6 @@ toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
 
-news_api = NewsApiSession()
-nlp_api = NLUApiSession()
 newsmart = NewSmart()
 
 
@@ -86,7 +81,7 @@ def category_detail_view(category):
     if (category.lower() not in NEWS_CATEGORIES):
         abort(404)
 
-    articles = news_api.get_top_articles(category=category)
+    articles = newsmart.get_top_articles(category=category)
     return render_template('category_detail.html', articles=articles, category=category)
 
 
@@ -102,9 +97,9 @@ def search_view():
         return redirect(url_for('home_view'))
 
     # call search
-    articles = news_api.search_articles(phrase)
+    articles = newsmart.search_articles(phrase)
 
-    bookmarked_urls = get_bookmarked_urls()
+    bookmarked_urls = newsmart.get_bookmarked_urls()
 
     return render_template(
         'search.html', phrase=phrase, articles=articles,
@@ -295,7 +290,7 @@ def create_tags():
     if form.validate():
         # extract keywords via 3rd party API
         # TODO: disable button on frontend after click since this takes awhile
-        terms_map = nlp_api.get_relevant_terms(form.article_url.data)
+        terms_map = newsmart.get_relevant_terms(form.article_url.data)
         keywords, concepts = terms_map['keywords'], terms_map['concepts']
         # create each tag and save to db
         tags = (Tag.new(term) for term in (keywords + concepts))

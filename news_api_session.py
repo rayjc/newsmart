@@ -5,7 +5,7 @@ from base_api_session import BaseApiSession
 
 
 class NewsApiSession(BaseApiSession):
-    key = os.environ["NEWS_API_KEY"]    # raise exception if not set
+    news_key = os.environ["NEWS_API_KEY"]    # raise exception if not set
     headlines_url = "https://newsapi.org/v2/top-headlines"
     articles_url = "https://newsapi.org/v2/everything"
 
@@ -28,7 +28,7 @@ class NewsApiSession(BaseApiSession):
             "content",
         }
         """
-        params = {"apiKey": NewsApiSession.key, "country": country}
+        params = {"apiKey": NewsApiSession.news_key, "country": country}
         if category:
             params.update({"category": category})
         if size:
@@ -45,7 +45,7 @@ class NewsApiSession(BaseApiSession):
         """
         assert sort in ("publishedAt", "relevancy", "popularity")
         params = {
-            "apiKey": NewsApiSession.key, "language": language,
+            "apiKey": NewsApiSession.news_key, "language": language,
             "q": phrase, "sortBy": sort
         }
         if sort == "popularity":

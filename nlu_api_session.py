@@ -4,7 +4,7 @@ from base_api_session import BaseApiSession
 
 
 class NLUApiSession(BaseApiSession):
-    key = os.environ["NLU_API_KEY"]    # raise exception if not set
+    nlu_key = os.environ["NLU_API_KEY"]    # raise exception if not set
     analytics_url = f"{os.environ['NLU_URL']}/v1/analyze?version=2019-07-12"
 
     def analyze_url(self, url, limit=10):
@@ -26,7 +26,7 @@ class NLUApiSession(BaseApiSession):
             }
         }
         resp = self.post(NLUApiSession.analytics_url,
-                        json, auth=('apiKey', NLUApiSession.key))
+                        json, auth=('apiKey', NLUApiSession.nlu_key))
         
         return resp
     
