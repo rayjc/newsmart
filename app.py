@@ -8,8 +8,9 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from forms import (ArticleForm, ArticleTagForm, LoginForm, RegisterForm,
                    TagsForm, UserEditForm)
 from logger import logger
-from models import (NEWS_CATEGORIES, Article, ArticleTag, Saves, Tag, User,
-                    UserCategory, connect_db)
+from models import (
+    NEWS_CATEGORIES, Article, ArticleTag, Category, Saves, Tag, User,
+    UserCategory, connect_db)
 from news_api_session import NewsApiSession
 from nlu_api_session import NLUApiSession
 from util import (CURR_USER_KEY, do_login, do_logout, get_bookmarked_urls,
@@ -193,9 +194,11 @@ def user_profile_view():
         return redirect(url_for('user_profile_view'))
 
     bookmarks = g.user.articles
+    categories = Category.query.all()
 
     return render_template(
-        "user_profile.html", form=form, submit_button="Update", bookmarks=bookmarks
+        "user_profile.html", form=form, submit_button="Update User", bookmarks=bookmarks,
+        categories=categories
     )
 
 
