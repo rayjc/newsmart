@@ -12,13 +12,26 @@
   </ul>
 </div>
 
+{% if g.user %}
 <hr>
 <h1 class="text-center">Your favorite categories</h1>
-<div></div>
+<div>
+  {% for category, articles in category_map.items() %}
+  <div>
+    <h2>{{category|capitalize}}</h2>
+    <ul>
+      {% for article in articles %}
+        {% include 'article_item.html' %}
+      {% endfor %}
+    </ul>
+  </div>
+  {% endfor %}
+</div>
 
 <hr>
 <h1 class="text-center">You might also like</h1>
 <div></div>
+{% endif %}
 
 <hr>
 <div class="text-center">

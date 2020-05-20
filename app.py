@@ -58,9 +58,17 @@ def home_view():
     top_articles = news_api.get_top_articles()
     bookmarked_urls = get_bookmarked_urls()
 
+    category_map = dict()
+    if g.user:
+        category_map = {
+            category.name: news_api.get_top_articles(category=category.name, size=10)
+            for category in g.user.categories
+        }
+
     return render_template(
         "home.html", top_articles=top_articles,
-        bookmarked_urls=bookmarked_urls
+        bookmarked_urls=bookmarked_urls,
+        category_map=category_map
     )
 
 
