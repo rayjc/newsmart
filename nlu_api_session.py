@@ -30,7 +30,7 @@ class NLUApiSession(BaseApiSession):
         
         return resp
     
-    def get_relevant_terms(self, url, limit=10,
+    def get_relevant_terms(self, url, limit=5,
                            keyword_relevance=0.7, concept_relevance=0.9):
         """
         Request and extract keywords and concepts for specified url;
