@@ -229,6 +229,26 @@ def create_article():
     return (jsonify(errors), 400)
 
 
+@app.route('/api/articles')
+# @login_required(isJSON=True)  TODO: uncomment
+def get_article_by_url():
+    """
+    Query and get an article by unique url;
+    return the result article object in JSON, otherwise 404.
+    """
+    url = request.args.get('article_url')
+
+    if not url:
+        return (jsonify(
+            {"errors":
+                {"message": "Missing article_url query parameter."}
+            }), 400)
+    
+    article = Article.query.filter(Article.url == url).first_or_404()
+
+    return (jsonify({"article": article.serialize()}), 200)
+
+
 @app.route('/api/saves', methods=['POST'])
 # @login_required(isJSON=True)  TODO: uncomment
 def create_bookmark():
