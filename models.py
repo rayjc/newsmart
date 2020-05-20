@@ -197,12 +197,14 @@ class Tag(db.Model):
             db.session.add(new_tag)
             db.session.commit()
         except IntegrityError:
-            logger.error(
+            logger.warning(
                 f"Cannot add {new_tag} to database; URL already exists."
             )
+            db.session.rollback()
             return None
         except SQLAlchemyError:
             logger.critical(f'Failed to create {new_tag} on database.')
+            db.session.rollback()
             return None
 
         return new_tag
@@ -210,6 +212,12 @@ class Tag(db.Model):
     def __repr__(self):
         return (f"<Tag: id={self.id} "
                 f"keyword='{self.keyword}'>")
+    
+    def serialize(self):
+        return {
+            "id": self.id,
+            "keyword": self.keyword,
+        }
 
 
 # Intermediate tables for many-to-many relationship
