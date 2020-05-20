@@ -26,19 +26,21 @@
   <div class="col-md-7 col-lg-6">
     <h2>Favorite Category</h2>
     <p class="lead">Please choose 3 of your favorite categories!</p>
-    <div class="form-group row">
-      {% for category in categories %}
-      <div class="col-md-6 col-lg-4">
-        {% if category in g.user.categories %}
-        <input type="checkbox" name="{{category.name}}" id="{{category.name}}-check" checked>
-        {% else %}
-        <input type="checkbox" name="{{category.name}}" id="{{category.name}}-check">
-        {% endif %}
-        <label for="{{category.name}}-check">{{category.name|capitalize}}</label>
+    <form action="" id="category-form">
+      <div class="row">
+        {% for category in categories %}
+        <div class="col-md-6 col-lg-4">
+          {% if category in g.user.categories %}
+          <input type="checkbox" name="{{category.name}}" id="{{category.name}}-check" checked>
+          {% else %}
+          <input type="checkbox" name="{{category.name}}" id="{{category.name}}-check">
+          {% endif %}
+          <label for="{{category.name}}-check">{{category.name|capitalize}}</label>
+        </div>
+        {% endfor %}
       </div>
-      {% endfor %}
       <button class="btn btn-primary btn-block btn-lg" type="submit">Update Preference</button>
-    </div>
+    </form>
   </div>
 </div>
 
