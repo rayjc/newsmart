@@ -11,6 +11,8 @@ from logger import logger
 db = SQLAlchemy()
 
 DEFAULT_IMG_URL = "static/image/question-mark.jpg"
+NEWS_CATEGORIES = ("business", "entertainment", "general",
+                   "health", "science", "sports", "technology")
 
 class User(db.Model):
 
@@ -26,6 +28,8 @@ class User(db.Model):
     saves = db.relationship('Saves', backref='user', passive_deletes=True)
     articles = db.relationship('Article', secondary="saves", lazy="joined",
                                backref='users')
+    users_categories = db.relationship('UserCategory', backref='user', passive_deletes=True)
+    categories = db.relationship('Category', secondary="users_categories", backref='users')
 
     bcrypt = Bcrypt()
 
@@ -226,6 +230,52 @@ class Tag(db.Model):
         }
 
 
+class Category(db.Model):
+
+    __tablename__ = "categories"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(32), nullable=False, unique=True)
+
+    users_categories = db.relationship('UserCategory', backref='category', passive_deletes=True)
+
+    @classmethod
+    def new(cls, name):
+        """
+        Create new tag object and commit to db.
+        Return tag object if successful, otherwise return None.
+        Note: tags can only be added internally, no UI.
+        """
+
+        new_category = cls(name=name)
+
+        try:
+            db.session.add(new_category)
+            db.session.commit()
+        except IntegrityError:
+            logger.warning(
+                f"Cannot add {new_category} to database; URL already exists."
+            )
+            db.session.rollback()
+            return None
+        except SQLAlchemyError:
+            logger.critical(f'Failed to create {new_category} on database.')
+            db.session.rollback()
+            return None
+
+        return new_category
+
+    def __repr__(self):
+        return (f"<Category: id={self.id} "
+                f"name='{self.name}'>")
+    
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+        }
+
+
 # Intermediate tables for many-to-many relationship
 class Saves(db.Model):
 
@@ -345,6 +395,75 @@ class ArticleTag(db.Model):
         return {
             "article_id": self.article_id,
             "tag_id": self.tag_id,
+        }
+
+
+class UserCategory(db.Model):
+
+    __tablename__ = "users_categories"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    # delete record if any parents get removed
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    category_id = db.Column(db.Integer,
+                           db.ForeignKey('categories.id', ondelete='CASCADE'), nullable=False)
+
+    __table_args__ = (
+        db.UniqueConstraint('user_id', 'category_id', name='unique_users_catgories'),
+    )
+
+    @classmethod
+    def new(cls, user_id, category_id):
+        """
+        Create new user-category object and commit to db.
+        Return user-category object if successful, otherwise return None.
+        """
+
+        new_user_category = cls(user_id=user_id, category_id=category_id)
+
+        try:
+            db.session.add(new_user_category)
+            db.session.commit()
+        except IntegrityError:
+            logger.error(
+                f"Cannot add {new_user_category} to database; URL already exists."
+            )
+            db.session.rollback()
+            return None
+        except SQLAlchemyError:
+            logger.critical(
+                f'Failed to create {new_user_category} on database.')
+            db.session.rollback()
+            return None
+
+        return new_user_category
+
+    @classmethod
+    def remove(cls, user_id, category_id):
+        """
+        Remove user-category association object and commit to db.
+        Return True if successful, otherwise return False.
+        """
+        user_category = cls.query.filter(user_id, category_id).first_or_404()
+
+        try:
+            db.session.delete(user_category)
+            db.session.commit()
+        except SQLAlchemyError:
+            logger.critical(f'Failed to delete {user_category} from database.')
+            db.session.rollback()
+            return False
+        
+        return True
+
+    def __repr__(self):
+        return (f"<User-Category: user_id={self.user_id} category_id='{self.category_id}'>")
+    
+    def serialize(self):
+        return {
+            "user_id": self.user_id,
+            "category_id": self.category_id,
         }
 
 

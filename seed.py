@@ -2,7 +2,8 @@
 import datetime
 
 from app import app
-from models import Article, ArticleTag, Saves, Tag, User, db
+from models import (Article, ArticleTag, Category, Saves, Tag, User,
+                    UserCategory, db, NEWS_CATEGORIES)
 
 # Create all tables
 db.drop_all()
@@ -12,6 +13,7 @@ db.create_all()
 db.session.query(User).delete()
 db.session.query(Article).delete()
 db.session.query(Tag).delete()
+db.session.query(Category).delete()
 
 # user
 users = [
@@ -45,11 +47,15 @@ articles = [
     )
 ]
 
+# tags
 tags = [
     Tag.new("gold"),
     Tag.new("Technology"), Tag.new("Tesla"), Tag.new("pandemic"), Tag.new("lockdown"),
     Tag.new("Disney")
 ]
+
+# categories
+categories = [Category.new(name) for name in NEWS_CATEGORIES]
 
 saves = [
     Saves.new(users[0].id, articles[0].id),
@@ -69,13 +75,23 @@ article_tags = [
     ArticleTag.new(articles[2].id, tags[5].id)
 ]
 
+user_categories = [
+    UserCategory.new(users[0].id, categories[0].id),
+    UserCategory.new(users[0].id, categories[2].id),
+    UserCategory.new(users[0].id, categories[4].id),
+    UserCategory.new(users[1].id, categories[1].id),
+    UserCategory.new(users[1].id, categories[3].id),
+    UserCategory.new(users[1].id, categories[5].id),
+]
 
 # Add new objects to session, so they'll persist
 db.session.add_all(users)
 db.session.add_all(articles)
 db.session.add_all(tags)
+db.session.add_all(categories)
 db.session.add_all(saves)
 db.session.add_all(article_tags)
+db.session.add_all(user_categories)
 
 # Commit--otherwise, this never gets saved!
 db.session.commit()

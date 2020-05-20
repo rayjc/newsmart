@@ -8,14 +8,12 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from forms import (ArticleForm, ArticleTagForm, LoginForm, RegisterForm,
                    TagsForm, UserEditForm)
 from logger import logger
-from models import Article, ArticleTag, Saves, Tag, User, connect_db
+from models import (NEWS_CATEGORIES, Article, ArticleTag, Saves, Tag, User,
+                    UserCategory, connect_db)
 from news_api_session import NewsApiSession
 from nlu_api_session import NLUApiSession
 from util import (CURR_USER_KEY, do_login, do_logout, get_bookmarked_urls,
                   login_required)
-
-NEWS_CATEGORIES = ("business", "entertainment", "general",
-                   "health", "science", "sports", "technology")
 
 app = Flask(__name__)
 
