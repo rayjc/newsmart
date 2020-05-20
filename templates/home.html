@@ -30,7 +30,15 @@
 
 <hr>
 <h1 class="text-center">You might also like</h1>
-<div></div>
+<div>
+  <ul>
+    {% for article in related_articles %}
+      {% if article.url not in bookmarked_urls %}
+        {% include 'article_item.html' %}
+      {% endif %}
+    {% endfor %}
+  </ul>
+</div>
 {% endif %}
 
 <hr>

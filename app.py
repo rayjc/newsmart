@@ -13,6 +13,7 @@ from models import (
     UserCategory, connect_db)
 from news_api_session import NewsApiSession
 from nlu_api_session import NLUApiSession
+from newsmart import NewSmart
 from util import (CURR_USER_KEY, do_login, do_logout, get_bookmarked_urls,
                   login_required)
 
@@ -32,6 +33,7 @@ connect_db(app)
 
 news_api = NewsApiSession()
 nlp_api = NLUApiSession()
+newsmart = NewSmart()
 
 
 @app.before_request
@@ -55,20 +57,16 @@ def home_view():
     """
     Home page with viewable/hidden sections for authenicated users.
     """
-    top_articles = news_api.get_top_articles()
-    bookmarked_urls = get_bookmarked_urls()
-
-    category_map = dict()
-    if g.user:
-        category_map = {
-            category.name: news_api.get_top_articles(category=category.name, size=10)
-            for category in g.user.categories
-        }
+    top_articles = newsmart.get_top_articles()
+    bookmarked_urls = newsmart.get_bookmarked_urls()
+    category_map = newsmart.get_user_category_articles()
+    related_articles = newsmart.get_recommended_articles()
 
     return render_template(
         "home.html", top_articles=top_articles,
         bookmarked_urls=bookmarked_urls,
-        category_map=category_map
+        category_map=category_map,
+        related_articles=related_articles
     )
 
 
