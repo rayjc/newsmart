@@ -50,10 +50,12 @@ class User(db.Model):
             db.session.commit()
         except IntegrityError:
             flash("Username/email already exist.", "danger")
+            db.session.rollback()
             return None
         except SQLAlchemyError:
             logger.critical(f'Failed to create {new_user} on database.')
             flash(f"Failed to create '{username}'", "danger")
+            db.session.rollback()
             return None
 
         return new_user
@@ -76,10 +78,12 @@ class User(db.Model):
             db.session.commit()
         except IntegrityError:
             flash("Username already exists.", "danger")
+            db.session.rollback()
             return None
         except SQLAlchemyError:
             logger.critical(f'Failed to update {user} on database.')
             flash(f"Failed to update '{username}'", "danger")
+            db.session.rollback()
             return None
 
         return user
@@ -145,9 +149,11 @@ class Article(db.Model):
             db.session.commit()
         except IntegrityError:
             logger.error(f"Cannot add {new_article} to database; URL already exists.")
+            db.session.rollback()
             return None
         except SQLAlchemyError:
             logger.critical(f'Failed to create {new_article} on database.')
+            db.session.rollback()
             return None
 
         return new_article
@@ -254,9 +260,11 @@ class Saves(db.Model):
             logger.error(
                 f"Cannot add {new_saves} to database. {e.orig.pgerror}"
             )
+            db.session.rollback()
             return None
         except SQLAlchemyError:
             logger.critical(f'Failed to create {new_saves} on database.')
+            db.session.rollback()
             return None
 
         return new_saves
@@ -274,6 +282,7 @@ class Saves(db.Model):
             db.session.commit()
         except SQLAlchemyError:
             logger.critical(f'Failed to delete {saves} from database.')
+            db.session.rollback()
             return False
         
         return True
@@ -319,10 +328,12 @@ class ArticleTag(db.Model):
             logger.error(
                 f"Cannot add {new_article_tag} to database; URL already exists."
             )
+            db.session.rollback()
             return None
         except SQLAlchemyError:
             logger.critical(
                 f'Failed to create {new_article_tag} on database.')
+            db.session.rollback()
             return None
 
         return new_article_tag
