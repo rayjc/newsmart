@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from forms import ArticleForm, LoginForm, RegisterForm, UserEditForm
 from logger import logger
-from models import Article, Saves, User, connect_db
+from models import Article, ArticleTag, Saves, Tag, User, connect_db
 from news_api_session import NewsApiSession
 from nlu_api_session import NLUApiSession
 from util import CURR_USER_KEY, do_login, do_logout, login_required
@@ -222,7 +222,7 @@ def create_bookmark():
     Create a relationship row between user and article.
     Return JSON response.
     Data: article_id
-    Note: the article should have been created
+    PRE: the article should have been created before
     """
     article_id = request.json.get('article_id')
     if article_id:
@@ -260,14 +260,23 @@ def remove_bookmark(saves_id):
 
 
 @app.route('/api/tags', methods=['POST'])
+# @login_required(isJSON=True)  TODO: uncomment
 def create_tags():
     """
     Extract tags based on url and save them to database;
     return lists of tag objects created in JSON response.
     Data: article_url
     """
-    # extract keywords via 3rd party API
-    # TODO: disable button on frontend after click since this takes awhile
+    url = request.json.get('article_url')
+    if url:
+        # extract keywords via 3rd party API
+        # TODO: disable button on frontend after click since this takes awhile
+        terms_map = nlp_api.get_relevant_terms(url)
+        keywords, concepts = terms_map['keywords'], terms_map['concepts']
+        # create each tag and save to db
+        tags = (Tag.new(term) for term in (keywords + concepts))
+        tags = filter(lambda tag: tag is not None, tags)
+        tags = list(map(lambda tag: tag.serialize(), tags))
+        return (jsonify({"articles": tags}), 201)
 
-    # create tags and associate them with this article
-    return (jsonify({"message": "testing"}), 200)
+    return (jsonify({"articles": {"message": "testing"}}), 400)
