@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField
+from wtforms import PasswordField, StringField, IntegerField
 from wtforms.validators import (URL, DataRequired, Email, InputRequired,
                                 Length, Optional)
 
@@ -33,6 +33,18 @@ class ArticleForm(FlaskForm):
     timestamp = StringField(
         'Published At',
         validators=[DataRequired(), InputRequired()]
+    )
+
+
+class ArticleTagForm(FlaskForm):
+    """Form for adding article-tag"""
+    article_id = IntegerField(
+        "Article id",
+        validators=[DataRequired()]
+    )
+    tag_id = IntegerField(
+        "Tag id",
+        validators=[DataRequired()]
     )
 
 
@@ -76,4 +88,12 @@ class UserEditForm(FlaskForm):
     password = PasswordField(
         'Verify Password',
         validators=[DataRequired(), InputRequired(), Length(min=3)]
+    )
+
+
+class TagsForm(FlaskForm):
+    """Form for adding tags."""
+    article_url = StringField(
+        "Article URL",
+        validators=[DataRequired(), URL()]
     )

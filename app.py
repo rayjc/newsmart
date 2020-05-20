@@ -5,7 +5,8 @@ from flask import (Flask, Response, abort, flash, g, jsonify, redirect,
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
-from forms import ArticleForm, LoginForm, RegisterForm, UserEditForm
+from forms import (ArticleForm, ArticleTagForm, LoginForm, RegisterForm,
+                   TagsForm, UserEditForm)
 from logger import logger
 from models import Article, ArticleTag, Saves, Tag, User, connect_db
 from news_api_session import NewsApiSession
@@ -225,7 +226,7 @@ def create_bookmark():
     PRE: the article should have been created before
     """
     article_id = request.json.get('article_id')
-    if article_id:
+    if article_id and isinstance(article_id, int):
         bookmark = Saves.new(g.user.id, article_id)
         return (
             (jsonify({"bookmark": bookmark.serialize()}), 201)
@@ -239,7 +240,10 @@ def create_bookmark():
             }), 400)
         )
 
-    return (jsonify({"bookmark": {"message": "Please provide article_id"}}), 400)
+    return (
+        jsonify({"errors": {"article_id": ["Please provide valid article_id"]}}),
+        400
+    )
 
 
 @app.route('/api/saves/<int:saves_id>', methods=['DELETE'])
@@ -256,7 +260,7 @@ def remove_bookmark(saves_id):
 
     return (jsonify(
         {"bookmark": {"message": f"Failed to delete bookmark."}}
-    ), 200)
+    ), 400)
 
 
 @app.route('/api/tags', methods=['POST'])
@@ -267,16 +271,43 @@ def create_tags():
     return lists of tag objects created in JSON response.
     Data: article_url
     """
-    url = request.json.get('article_url')
-    if url:
+    data = request.json
+    form = TagsForm(**data, meta={'csrf': False})
+
+    if form.validate():
         # extract keywords via 3rd party API
         # TODO: disable button on frontend after click since this takes awhile
-        terms_map = nlp_api.get_relevant_terms(url)
+        terms_map = nlp_api.get_relevant_terms(form.article_url.data)
         keywords, concepts = terms_map['keywords'], terms_map['concepts']
         # create each tag and save to db
         tags = (Tag.new(term) for term in (keywords + concepts))
         tags = filter(lambda tag: tag is not None, tags)
         tags = list(map(lambda tag: tag.serialize(), tags))
-        return (jsonify({"articles": tags}), 201)
+        return (jsonify({"tags": tags}), 201)
 
-    return (jsonify({"articles": {"message": "testing"}}), 400)
+    errors = {"errors": form.errors}
+    return (jsonify(errors), 400)
+
+
+@app.route('/api/articletag', methods=['POST'])
+def create_article_tag():
+    """
+    Create association between specified article and tag;
+    return created association object in JSON.
+    Data: article_id, tag_id
+    PRE: article and tag must have been created on db
+    """
+    data = request.json
+    form = ArticleTagForm(**data, meta={'csrf': False})
+
+    if form.validate():
+        article_tag = ArticleTag.new(form.article_id.data, form.tag_id.data)
+        return (
+            (jsonify({"article-tag": article_tag.serialize()}), 201)
+            if article_tag else
+            (jsonify({"article-tag": {"message": "Failed to create article-tag"}}),
+                400)
+        )
+
+    errors = {"errors": form.errors}
+    return (jsonify(errors), 400)

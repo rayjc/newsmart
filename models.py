@@ -341,6 +341,12 @@ class ArticleTag(db.Model):
     def __repr__(self):
         return (f"<Article-Tag: article={self.article_id} tag_id='{self.tag_id}'>")
     
+    def serialize(self):
+        return {
+            "article_id": self.article_id,
+            "tag_id": self.tag_id,
+        }
+
 
 def connect_db(app):
     """
