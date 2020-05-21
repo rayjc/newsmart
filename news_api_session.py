@@ -45,6 +45,10 @@ class NewsApiSession(BaseApiSession):
         return a list of article objects.
         """
         assert sort in ("publishedAt", "relevancy", "popularity")
+
+        if not phrase:
+            return []
+
         params = {
             "apiKey": NewsApiSession.news_key, "language": language,
             "q": phrase, "sortBy": sort,
