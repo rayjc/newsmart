@@ -1,4 +1,4 @@
-class NewSmart {
+class NewSmartSession {
   constructor() {
     this.articlesUrl = "/api/articles";
     this.savesUrl = "/api/saves";
@@ -26,8 +26,14 @@ class NewSmart {
 
   async saveArticle(title, summary, content, url, img_url, source, timestamp) {
     try {
+      const data = {title, summary, content, url, img_url, source, timestamp};
+      Object.keys(data).forEach(function (key) {
+        if (!data[key]) {
+          delete data[key];
+        }
+      });
       const response = await axios.post(this.articlesUrl, {
-        title, summary, content, url, img_url, source, timestamp,
+        ...data
       });
       return response.data.article;
     } catch (error) {
