@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1 class="text-center">Top News</h1>
-<div>
+<div id="top-articles">
   <ul>
     {% for article in top_articles %}
       {% include 'article_item.html' %}
@@ -15,7 +15,7 @@
 {% if g.user %}
 <hr>
 <h1 class="text-center">Your favorite categories</h1>
-<div>
+<div id="category-articles">
   {% for category, articles in category_map.items() %}
   <div>
     <h2>{{category|capitalize}}</h2>
@@ -30,7 +30,7 @@
 
 <hr>
 <h1 class="text-center">You might also like</h1>
-<div>
+<div id="related-articles">
   <ul>
     {% for article in related_articles %}
       {% if article.url not in bookmarked_urls %}

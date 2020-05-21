@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1 class="text-center">Search Result for '{{phrase}}'</h1>
-<div>
+<div id="search-articles">
   <ul>
     {% for article in articles %}
       {% include 'article_item.html' %}

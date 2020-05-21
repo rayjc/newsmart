@@ -1,11 +1,13 @@
-<li data-title="{{article['title']}}" data-content="{{article['content']}}" data-url="{{article['url']}}"
-  data-source="{{article['source']['name']}}" data-summary="{{article['description']}}"
-  data-img-url="{{article['urlToImage']}}" data-timestamp="{{article['publishedAt']}}">
+<li data-title="{{article['title']}}" data-content="{{article['content'] if article['content']}}" data-url="{{article['url']}}"
+  data-source="{{article['source']['name']}}" data-summary="{{article['description'] if article['description']}}"
+  data-img-url="{{article['urlToImage'] if article['urlToImage']}}" data-timestamp="{{article['publishedAt'] if article['publishedAt']}}">
   {% if g.user %}
     {% if article.url in bookmarked_urls %}
-    <button class="btn btn-sm btn-outline-dark" data-bookmarked><i class="fas fa-bookmark"></i></button>
+    <button class="btn btn-sm btn-outline-dark btn-bookmark" data-bookmark-id="{{bookmark_map[article.url]}}">
+      <i class="fas fa-bookmark"></i>
+    </button>
     {% else %}
-    <button class="btn btn-sm btn-outline-dark"><i class="far fa-bookmark"></i></button>
+    <button class="btn btn-sm btn-outline-dark btn-bookmark"><i class="far fa-bookmark"></i></button>
     {% endif %}
   {% endif %}
   <a target="_blank" rel="noopener noreferrer" href="{{article['url']}}">{{article['title']}} -
