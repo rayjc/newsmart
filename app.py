@@ -209,7 +209,7 @@ def user_profile_view():
 
 # RESTful APIs
 @app.route('/api/articles', methods=['POST'])
-# @login_required(isJSON=True)  TODO: uncomment
+@login_required(isJSON=True)
 def create_article():
     """
     Create an article object and store on db.
@@ -237,7 +237,7 @@ def create_article():
 
 
 @app.route('/api/articles')
-# @login_required(isJSON=True)  TODO: uncomment
+@login_required(isJSON=True)
 def get_article_by_url():
     """
     Query and get an article by unique url;
@@ -257,7 +257,7 @@ def get_article_by_url():
 
 
 @app.route('/api/saves', methods=['POST'])
-# @login_required(isJSON=True)  TODO: uncomment
+@login_required(isJSON=True)
 def create_bookmark():
     """
     Create a relationship row between user and article.
@@ -287,7 +287,7 @@ def create_bookmark():
 
 
 @app.route('/api/saves/<int:saves_id>', methods=['DELETE'])
-# @login_required(isJSON=True)  TODO: uncomment
+@login_required(isJSON=True)
 def remove_bookmark(saves_id):
     """
     Remove a relationship row between user and article.
@@ -304,7 +304,7 @@ def remove_bookmark(saves_id):
 
 
 @app.route('/api/tags', methods=['POST'])
-# @login_required(isJSON=True)  TODO: uncomment
+@login_required(isJSON=True)
 def create_tags():
     """
     Extract tags based on url and save them to database;
@@ -335,7 +335,7 @@ def create_tags():
 
 
 @app.route('/api/articletag', methods=['POST'])
-# @login_required(isJSON=True)  TODO: uncomment
+@login_required(isJSON=True)
 def create_article_tag():
     """
     Create association between specified article and tag;
@@ -360,7 +360,7 @@ def create_article_tag():
 
 
 @app.route('/api/usercategory', methods=['PUT'])
-# @login_required(isJSON=True)  TODO: uncomment
+@login_required(isJSON=True)
 def update_user_category():
     """
     Update all user categories;
