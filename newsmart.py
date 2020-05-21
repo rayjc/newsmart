@@ -42,7 +42,6 @@ class NewSmart(NewsApiSession, NLUApiSession):
                     tags = tags[:NewSmart.max_terms]
                 # compose a phrase; tags include concepts followed by keywords
                 phrase = " ".join(tags)
-                print(phrase)
                 # search articles based on phrase
                 articles = self.search_articles(phrase, size=3,
                                                 exclude_domains=NewSmart.video_urls)
