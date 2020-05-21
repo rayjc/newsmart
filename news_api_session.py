@@ -46,7 +46,7 @@ class NewsApiSession(BaseApiSession):
         assert sort in ("publishedAt", "relevancy", "popularity")
         params = {
             "apiKey": NewsApiSession.news_key, "language": language,
-            "q": phrase, "sortBy": sort
+            "q": phrase, "sortBy": sort, "excludeDomain": "youtube.com"
         }
         if sort == "popularity":
             # limit search to recent two weeks

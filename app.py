@@ -216,6 +216,9 @@ def create_article():
     form = ArticleForm(**data, meta={'csrf': False})
 
     if form.validate():
+        if not newsmart.isUrlValid(form.url.data):
+            return (jsonify({"errors": {"url": ["Not a valid url."]}}), 400)
+
         article = Article.query.filter(Article.url == form.url.data).one_or_none()
         if article:
             # article object has been created already
@@ -308,6 +311,15 @@ def create_tags():
     form = TagsForm(**data, meta={'csrf': False})
 
     if form.validate():
+        # Need a way to avoid using NLP on non-textual webpages...
+        # For now, youtube.com seems to be the only source of video news in NewsAPI
+        if "youtube.com" in form.article_url.data:
+            return (
+                jsonify({
+                    "errors": 
+                        {"article_url": ["NLP does not work for video."]}
+                }), 400
+            )
         # extract keywords via 3rd party API
         # TODO: disable button on frontend after click since this takes awhile
         terms_map = newsmart.get_relevant_terms(form.article_url.data)
@@ -337,9 +349,9 @@ def create_article_tag():
     if form.validate():
         article_tag = ArticleTag.new(form.article_id.data, form.tag_id.data)
         return (
-            (jsonify({"article-tag": article_tag.serialize()}), 201)
+            (jsonify({"articletag": article_tag.serialize()}), 201)
             if article_tag else
-            (jsonify({"article-tag": {"message": "Failed to create article-tag"}}),
+            (jsonify({"articletag": {"message": "Failed to create article-tag"}}),
                 400)
         )
 
