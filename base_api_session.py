@@ -27,7 +27,7 @@ class BaseApiSession:
                 raise
             return None
         except requests.RequestException as e:
-            logger.error(f"Response: {e.response}\nRequest: {e.request}")
+            logger.error(f"GET request: {e} - body: {e.request.body.decode()}")
             if os.environ.get("FLASK_ENV") == "development":
                 raise
             return None
@@ -48,7 +48,7 @@ class BaseApiSession:
                 raise
             return None
         except requests.RequestException as e:
-            logger.error(f"Response: {e.response}\nRequest: {e.request}")
+            logger.error(f"POST request: {e} - body: {e.request.body.decode()}")
             if os.environ.get("FLASK_ENV") == "development":
                 raise
             return None
@@ -69,7 +69,7 @@ class BaseApiSession:
                 raise
             return None
         except requests.RequestException as e:
-            logger.error(f"Response: {e.response}\nRequest: {e.request}")
+            logger.error(f"DELETE request: {e} - body: {e.request.body.decode()}")
             if os.environ.get("FLASK_ENV") == "development":
                 raise
             return None
@@ -88,7 +88,7 @@ class BaseApiSession:
             logger.warning(f"HEAD request timed out for {url}")
             return True
         except requests.HTTPError as e:
-            logger.warning(f"HEAD request: {e}")
+            logger.warning(f"HEAD request: {e} - body: {e.request.body.decode()}")
             return True
         except requests.RequestException as e:
             logger.error(f"ERROR: {e}")
