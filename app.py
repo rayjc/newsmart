@@ -56,12 +56,14 @@ def home_view():
     bookmarked_urls = newsmart.get_bookmarked_urls()
     category_map = newsmart.get_user_category_articles()
     related_articles = newsmart.get_recommended_articles()
+    bookmark_map = newsmart.get_bookmark_url_to_id()
 
     return render_template(
         "home.html", top_articles=top_articles,
         bookmarked_urls=bookmarked_urls,
         category_map=category_map,
-        related_articles=related_articles
+        related_articles=related_articles,
+        bookmark_map=bookmark_map,
     )
 
 
@@ -100,10 +102,12 @@ def search_view():
     articles = newsmart.search_articles(phrase, exclude_domains=NewSmart.video_urls)
 
     bookmarked_urls = newsmart.get_bookmarked_urls()
+    bookmark_map = newsmart.get_bookmark_url_to_id()
 
     return render_template(
         'search.html', phrase=phrase, articles=articles,
-        bookmarked_urls=bookmarked_urls
+        bookmarked_urls=bookmarked_urls,
+        bookmark_map=bookmark_map
     )
 
 
@@ -318,7 +322,10 @@ def create_tags():
             return (jsonify({"tags": []}), 200)
         keywords, concepts = terms_map['keywords'], terms_map['concepts']
         # create each tag and save to db
-        tags = (Tag.new(term) for term in (keywords + concepts))
+        tags = (
+            Tag.new(term) for index, term in enumerate(concepts + keywords)
+            if index < newsmart.max_terms
+        )
         tags = filter(lambda tag: tag is not None, tags)
         tags = list(map(lambda tag: tag.serialize(), tags))
         return (jsonify({"tags": tags}), 201)

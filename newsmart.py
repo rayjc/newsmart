@@ -6,6 +6,7 @@ from nlu_api_session import NLUApiSession
 
 
 class NewSmart(NewsApiSession, NLUApiSession):
+    max_terms = 4
     
     def get_user_category_articles(self, limit=10):
         """
@@ -36,8 +37,12 @@ class NewSmart(NewsApiSession, NLUApiSession):
             for save in saves:
                 # extract tags
                 tags = [tag.keyword for tag in save.article.tags]
-                # compose a phrase from concepts then keywords
-                phrase = " ".join(tags[::-1])
+                if len(tags) > NewSmart.max_terms:
+                    # truncate words
+                    tags = tags[:NewSmart.max_terms]
+                # compose a phrase; tags include concepts followed by keywords
+                phrase = " ".join(tags)
+                print(phrase)
                 # search articles based on phrase
                 articles = self.search_articles(phrase, size=3,
                                                 exclude_domains=NewSmart.video_urls)
@@ -53,3 +58,14 @@ class NewSmart(NewsApiSession, NLUApiSession):
             {}
         )
         return bookmarked_urls
+    
+    def get_bookmark_url_to_id(self):
+        """
+        Return a map of bookmarked article url to bookmark id.
+        """
+        bookmark_map = (
+            {saves.article.url: saves.id for saves in g.user.saves}
+            if g.user else
+            {}
+        )
+        return bookmark_map
