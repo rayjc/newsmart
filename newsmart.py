@@ -39,7 +39,8 @@ class NewSmart(NewsApiSession, NLUApiSession):
                 # compose a phrase from concepts then keywords
                 phrase = " ".join(tags[::-1])
                 # search articles based on phrase
-                articles = self.search_articles(phrase, size=3)
+                articles = self.search_articles(phrase, size=3,
+                                                exclude_domains=NewSmart.video_urls)
                 related_articles.extend(articles)
         return related_articles
 

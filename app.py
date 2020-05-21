@@ -97,7 +97,7 @@ def search_view():
         return redirect(url_for('home_view'))
 
     # call search
-    articles = newsmart.search_articles(phrase)
+    articles = newsmart.search_articles(phrase, exclude_domains=NewSmart.video_urls)
 
     bookmarked_urls = newsmart.get_bookmarked_urls()
 
@@ -311,18 +311,11 @@ def create_tags():
     form = TagsForm(**data, meta={'csrf': False})
 
     if form.validate():
-        # Need a way to avoid using NLP on non-textual webpages...
-        # For now, youtube.com seems to be the only source of video news in NewsAPI
-        if "youtube.com" in form.article_url.data:
-            return (
-                jsonify({
-                    "errors": 
-                        {"article_url": ["NLP does not work for video."]}
-                }), 400
-            )
         # extract keywords via 3rd party API
         # TODO: disable button on frontend after click since this takes awhile
         terms_map = newsmart.get_relevant_terms(form.article_url.data)
+        if not terms_map['keywords'] and not terms_map['concepts']:
+            return (jsonify({"tags": []}), 200)
         keywords, concepts = terms_map['keywords'], terms_map['concepts']
         # create each tag and save to db
         tags = (Tag.new(term) for term in (keywords + concepts))

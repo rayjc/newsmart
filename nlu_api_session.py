@@ -6,6 +6,9 @@ from base_api_session import BaseApiSession
 class NLUApiSession(BaseApiSession):
     nlu_key = os.environ["NLU_API_KEY"]    # raise exception if not set
     analytics_url = f"{os.environ['NLU_URL']}/v1/analyze?version=2019-07-12"
+    # Need a way to avoid using NLP on non-textual webpages...
+    # For now, youtube.com seems to be the only source of video news in NewsAPI
+    video_urls = {"youtube.com"}
 
     def analyze_url(self, url, limit=10):
         """
@@ -43,10 +46,15 @@ class NLUApiSession(BaseApiSession):
             "concepts": []
         }
         """
-        resp = self.analyze_url(url, limit)
+        resp = (
+            None
+            # do not use NLP on video urls
+            if any(video_url in url for video_url in NLUApiSession.video_urls) else
+            self.analyze_url(url, limit)
+        )
 
         if not resp:
-            {"keywords": [], "concepts": []}
+            return {"keywords": [], "concepts": []}
 
         keywords = [
             keyword['text']

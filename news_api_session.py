@@ -38,7 +38,8 @@ class NewsApiSession(BaseApiSession):
 
         return resp.get("articles") if resp else resp
 
-    def search_articles(self, phrase, size=None, sort="popularity", language="en", days=7):
+    def search_articles(self, phrase, size=None, sort="popularity",
+                        language="en", days=7, exclude_domains=[]):
         """
         Search for articles for specified phrase;
         return a list of article objects.
@@ -46,7 +47,7 @@ class NewsApiSession(BaseApiSession):
         assert sort in ("publishedAt", "relevancy", "popularity")
         params = {
             "apiKey": NewsApiSession.news_key, "language": language,
-            "q": phrase, "sortBy": sort, "excludeDomain": "youtube.com"
+            "q": phrase, "sortBy": sort,
         }
         if sort == "popularity":
             # limit search to recent two weeks
@@ -54,6 +55,8 @@ class NewsApiSession(BaseApiSession):
             params.update({"from": from_date.isoformat()})
         if size:
             params.update({"pageSize": size})
+        if exclude_domains:
+            params.update({"excludeDomains" : ",".join(exclude_domains)})
         
         resp = self.get(NewsApiSession.articles_url, params)
 
