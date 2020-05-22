@@ -88,7 +88,7 @@ class BaseApiSession:
             logger.warning(f"HEAD request timed out for {url}")
             return True
         except requests.HTTPError as e:
-            logger.warning(f"HEAD request: {e} - body: {e.request.body.decode()}")
+            logger.warning(f"HEAD request: {e}")
             return True
         except requests.RequestException as e:
             logger.error(f"ERROR: {e}")
