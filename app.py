@@ -200,10 +200,11 @@ def user_profile_view():
 
     bookmarks = g.user.articles
     categories = Category.query.all()
+    bookmark_map = newsmart.get_bookmark_url_to_id()
 
     return render_template(
-        "user_profile.html", form=form, submit_button="Update User", bookmarks=bookmarks,
-        categories=categories
+        "user_profile.html", form=form, submit_button="Update User",
+        bookmarks=bookmarks, bookmark_map=bookmark_map, categories=categories
     )
 
 

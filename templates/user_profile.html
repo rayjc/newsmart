@@ -50,7 +50,7 @@
 
 <hr>
 <h2 class="text-center">Bookmarks</h2>
-<div>
+<div id="saved-articles">
   <ul>
     {% for article in bookmarks %}
       <li>
@@ -58,6 +58,9 @@
           <a target="_blank" rel="noopener noreferrer" href="{{article['url']}}">
             {{article['title']}} - {{article['timestamp']}}
           </a>
+          <button class="btn btn-sm btn-outline-dark remove-bookmark" data-bookmark-id="{{bookmark_map[article.url]}}">
+            <i class="far fa-trash-alt"></i>
+          </button>
         </div>
         <div>
           {% for tag in article.tags %}

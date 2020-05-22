@@ -4,7 +4,8 @@ $(async function(){
   const $relatedDiv = $('#related-articles');
   const $searchDiv = $('#search-articles');
   const $categoryForm = $('#category-form');
-  const $categoryBtn = $('#category-btn')
+  const $categoryBtn = $('#category-btn');
+  const $bookmarkDiv = $('#saved-articles');
   const newsmart = new NewSmartSession();
 
   $topDiv.on("click", "button.btn-bookmark", bookmarkHandler);
@@ -20,6 +21,11 @@ $(async function(){
     if ($('.category-check:checked').length >= 3) {
       $('.category-check:not(:checked)').attr('disabled', '');
     }
+  });
+  $bookmarkDiv.on("click", "button.remove-bookmark", async function(){
+    const $this = $(this);
+    $this.closest('li').remove();
+    await newsmart.removeBookmark($this.attr('data-bookmark-id'));
   });
 
   async function putCategoryHandler(event) {
