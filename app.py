@@ -64,6 +64,7 @@ def home_view():
         category_map=category_map,
         related_articles=related_articles,
         bookmark_map=bookmark_map,
+        categories=NEWS_CATEGORIES,
     )
 
 
@@ -84,7 +85,10 @@ def category_detail_view(category):
         abort(404)
 
     articles = newsmart.get_top_articles(category=category)
-    return render_template('category_detail.html', articles=articles, category=category)
+    return render_template(
+        'category_detail.html', articles=articles,
+        category=category, categories=NEWS_CATEGORIES,
+    )
 
 
 @app.route('/search')
@@ -107,7 +111,8 @@ def search_view():
     return render_template(
         'search.html', phrase=phrase, articles=articles,
         bookmarked_urls=bookmarked_urls,
-        bookmark_map=bookmark_map
+        bookmark_map=bookmark_map,
+        categories=NEWS_CATEGORIES,
     )
 
 
@@ -134,7 +139,8 @@ def login_view():
         flash("Username and password do not match!", 'danger')
 
     return render_template(
-        'login.html', form=form, form_id="login-form", submit_button="Log in"
+        'login.html', form=form, form_id="login-form", submit_button="Log in",
+        categories=NEWS_CATEGORIES,
     )
 
 
@@ -176,7 +182,8 @@ def signup_view():
 
     else:
         return render_template(
-            'signup.html', form=form, form_id="signup-form", submit_button="Sign up!"
+            'signup.html', form=form, form_id="signup-form", submit_button="Sign up!",
+            categories=NEWS_CATEGORIES,
         )
 
 
@@ -204,7 +211,8 @@ def user_profile_view():
 
     return render_template(
         "user_profile.html", form=form, submit_button="Update User",
-        bookmarks=bookmarks, bookmark_map=bookmark_map, categories=categories
+        bookmarks=bookmarks, bookmark_map=bookmark_map, categories_objs=categories,
+        categories=NEWS_CATEGORIES,
     )
 
 

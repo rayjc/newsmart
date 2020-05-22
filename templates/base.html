@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>NewSmart{% block title %}{% endblock %}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="apple-touch-icon" sizes="180x180" href="{{url_for('static', filename='images/icon/apple-touch-icon.png')}}">
   <link rel="icon" type="image/png" sizes="32x32" href="{{url_for('static', filename='images/icon/favicon-32x32.png')}}">
   <link rel="icon" type="image/png" sizes="16x16" href="{{url_for('static', filename='images/icon/favicon-16x16.png')}}">
@@ -22,53 +23,166 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a href="/" class="navbar-brand">
-          <span>NewSmart</span>
-        </a>
+  <!--********************************************************-->
+  <!--********************* SITE HEADER **********************-->
+  <!--********************************************************-->
+  <header class="site-header header-style-two header-style-five">
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              Start Site Navigation
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <div class="site-navigation">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="navbar navbar-expand-lg navigation-area">
+              <div class="site-logo-block">
+                <a class="navbar-brand site-logo newsmart-logo" href="{{url_for('home_view')}}">
+                  NewSmart
+                </a>
+              </div>
+              <!--~./ site-logo-block ~-->
+              <div class="mainmenu-area">
+                <nav class="menu">
+                  <ul id="nav">
+                    <li><a href="{{url_for('home_view')}}">Home</a>
+                    </li>
+                    <li class="dropdown-trigger"><a href="#">Categories</a>
+                      <ul class="dropdown-content">
+                        {% for category in categories %}
+                        <li>
+                          <a href="{{url_for('category_detail_view', category=category)}}">{{category|capitalize}}</a>
+                        </li>
+                        {% endfor %}
+                      </ul>
+                    </li>
+                    <li class="dropdown-trigger d-lg-none"><a href="#"><i class="fas fa-user"></i></a>
+                      <ul class="dropdown-content">
+                        {% if g.user %}
+                        <li><a href="{{url_for('user_profile_view')}}">My Profile</a></li>
+                        <li><a href="{{url_for('logout_view')}}">Log Out</a></li>
+                        {% else %}
+                        <li><a href="{{url_for('signup_view')}}">Sign Up</a></li>
+                        <li><a href="{{url_for('login_view')}}">Log In</a></li>
+                        {% endif %}
+                      </ul>
+                    </li>
+
+                  </ul>
+                </nav>
+                <!--/.menu-->
+              </div>
+              <!--~./ mainmenu-wrap ~-->
+  
+              <div class="header-navigation-right">
+                {% if g.user %}
+                <div class="social-profile">
+                  <ul class="social-share-two">
+                    <li>
+                      <div>
+                        <i class="fas fa-user"></i>
+                        <a href="{{url_for('user_profile_view')}}">{{g.user.username}}</a>
+                      </div>
+                    </li>
+                    <li>
+                      <a href="{{url_for('logout_view')}}"><i class="fas fa-sign-out-alt"></i></a>
+                    </li>
+                  </ul>
+                </div>
+                {% endif %}
+                <!--~./ social-profile ~-->
+
+                <div class="search-wrap">
+                  <div class="search-btn">
+                    <img src="{{url_for('static', filename='images/icon/search.png')}}" alt="icon">
+                    <span>Search</span>
+                  </div>
+                  <div class="search-form">
+                    <form action="{{url_for('search_view')}}" method="GET">
+                      <input type="search" name="q" placeholder="Search News">
+                      <button type="submit"><i class='fa fa-search'></i></button>
+                    </form>
+                  </div>
+                </div>
+                <!--~./ search-wrap ~-->
+  
+                <div class="sidebar-menu-btn">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+              <!--~./ header-navigation-right ~-->
+            </div>
+            <!--~./ navigation-area ~-->
+          </div>
+        </div>
       </div>
-      <ul class="nav navbar-nav navbar-right">
-        {% if request.endpoint != None %}
-        <li class="nav-item">
-          <form class="form-inline" action="{{url_for('search_view')}}">
-            <input name="q" class="form-control" placeholder="Search News" id="search">
-            <button class="btn btn-default">
-              <span class="fa fa-search"></span>
-            </button>
-          </form>
-        </li>
-        {% endif %}
-        {% if not g.user %}
-        <li class="nav-item"><a class="nav-link" href="{{url_for('signup_view')}}">Sign up</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{url_for('login_view')}}">Log in</a></li>
-        {% else %}
-        <li class="nav-item">
-          <a class="nav-link" href="{{url_for('user_profile_view')}}">
-            {{g.user.username}}
-          </a>
-        </li>
-        <li class="nav-item"><a class="nav-link" href="{{url_for('logout_view')}}">Log out</a></li>
-        {% endif %}
-      </ul>
     </div>
-  </nav>
-  {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-  {% for category, msg in messages %}
-  <div class="alert alert-{{category}}">{{msg}}</div>
-  {% endfor %}
-  {% endif %}
-  {% endwith %}
-  <div class="container mt-3">
-    {% block content %}
-    {% endblock %}
+    <!--~./ site-navigation ~-->
+  
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              Start Mobile Menu
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <div class="mobile-menu">
+      <a class="mobile-logo newsmart-logo" href="{{url_for('home_view')}}">
+        NewSmart
+      </a>
+    </div>
+    <!--~~./ end mobile menu ~~-->
+  </header>
+  <hr>
+  <!--~./ end site header ~-->
+
+  <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          Start Sidebar Menu
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+  <div class="sidebar-menu tse-scrollable">
+    <div class="tse-content">
+      <a href="#" class="sidebar-menu-close-button"><i class="fa fa-close"></i></a>
+      <div class="sidebar-menu-inner"></div>
+    </div>
+  </div>
+  <div class="sidebar-menu-close-all-window"></div>
+  <!--~./ end Sidebar Menu ~-->
+
+  <div class="site-content">
+    <div class="container mt-3 pt-20">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      {% for category, msg in messages %}
+      <div class="alert alert-{{category}}">{{msg}}</div>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+
+      {% block content %}
+      {% endblock %}
+    </div>
   </div>
 
+  <!-- jQuery js -->
+  <script src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
+  <!-- Bootstrap js -->
+  <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+  <!-- Popper js -->
+  <script src="{{url_for('static', filename='js/popper.min.js')}}"></script>
+  <!-- Owl carousel js -->
+  <script src="{{url_for('static', filename='js/owl.carousel.min.js')}}"></script>
+  <!-- Masonary js -->
+  <script src="{{url_for('static', filename='js/masonary.min.js')}}"></script>
+  <!-- News Ticker js -->
+  <script src="{{url_for('static', filename='js/breaking-news-ticker.min.js')}}"></script>
+  <!-- Trackpad Scroll js -->
+  <script src="{{url_for('static', filename='js/jquery.trackpad-scroll-emulator.min.js')}}"></script>
+  <!-- Sticky ResizeSensor js -->
+  <script src="{{url_for('static', filename='js/ResizeSensor.min.js')}}"></script>
+  <!-- Sticky Sidebar js -->
+  <script src="{{url_for('static', filename='js/theia-sticky-sidebar.min.js')}}"></script>
+  <!-- Plugin js -->
+  <script src="{{url_for('static', filename='js/plugins.js')}}"></script>
+  <!-- main js -->
+  <script src="{{url_for('static', filename='js/main.js')}}"></script>
 
-  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-    crossorigin="anonymous"></script>
   <script src="https://unpkg.com/axios/dist/axios.js"></script>
   <script src="{{url_for('static', filename='js/newsmart-session.js')}}"></script>
   <script src="{{url_for('static', filename='js/app.js')}}"></script>

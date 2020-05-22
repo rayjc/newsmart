@@ -3028,7 +3028,7 @@ ul.dropdown-content > .dropdown-trigger:hover > ul.dropdown-content > li:hover >
 }
 
 .site-header.header-style-five .social-share-two > li > a {
-  font-size: 12px;
+  font-size: 14px;
   width: 30px;
 }
 
@@ -8063,6 +8063,14 @@ ul.dropdown-content > .dropdown-trigger:hover > ul.dropdown-content > li:hover >
 .site-footer.footer-bolg-style-two .widget.bt-about-us-widget .widget-content .social-share-two {
   padding-top: 0px;
 }
+
+.newsmart-logo {
+  font-family: 'Alegreya', serif;
+  color: black;
+  font-weight: bold;
+  font-size: x-large;
+}
+
 
 @media only screen and (max-width: 1199px) {
   .site-footer.footer-default-style .widget .post.side-post .content-entry-wrap {

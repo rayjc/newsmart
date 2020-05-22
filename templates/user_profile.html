@@ -28,7 +28,7 @@
     <p class="lead">Please choose 3 of your favorite categories!</p>
     <form action="" id="category-form">
       <div class="row">
-        {% for category in categories %}
+        {% for category in category_objs %}
         <div class="col-md-6 col-lg-4">
           {% if category in g.user.categories %}
           <input type="checkbox" name="{{category.name}}" class="category-check" data-id="{{category.id}}" checked>
