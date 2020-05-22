@@ -31,15 +31,19 @@
         {% for category in categories %}
         <div class="col-md-6 col-lg-4">
           {% if category in g.user.categories %}
-          <input type="checkbox" name="{{category.name}}" id="{{category.name}}-check" checked>
+          <input type="checkbox" name="{{category.name}}" class="category-check" data-id="{{category.id}}" checked>
           {% else %}
-          <input type="checkbox" name="{{category.name}}" id="{{category.name}}-check">
+            {% if g.user.categories|length > 2 %}
+            <input type="checkbox" name="{{category.name}}" class="category-check" data-id="{{category.id}}" disabled>
+            {% else %}
+            <input type="checkbox" name="{{category.name}}" class="category-check" data-id="{{category.id}}">
+            {% endif %}
           {% endif %}
           <label for="{{category.name}}-check">{{category.name|capitalize}}</label>
         </div>
         {% endfor %}
       </div>
-      <button class="btn btn-primary btn-block btn-lg" type="submit">Update Preference</button>
+      <button class="btn btn-primary btn-block btn-lg" type="submit" id="category-btn">Update Preference</button>
     </form>
   </div>
 </div>

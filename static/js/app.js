@@ -3,6 +3,8 @@ $(async function(){
   const $categoryDiv = $('#category-articles');
   const $relatedDiv = $('#related-articles');
   const $searchDiv = $('#search-articles');
+  const $categoryForm = $('#category-form');
+  const $categoryBtn = $('#category-btn')
   const newsmart = new NewSmartSession();
 
   console.log("CONNECTED");
@@ -11,7 +13,33 @@ $(async function(){
   $categoryDiv.on("click", "button.btn-bookmark", bookmarkHandler);
   $relatedDiv.on("click", "button.btn-bookmark", bookmarkHandler);
   $searchDiv.on("click", "button.btn-bookmark", bookmarkHandler);
+  $categoryForm.on("submit", putCategoryHandler);
+  $categoryForm.on("click", ".category-check", function() {
+    // revert submit button back
+    $categoryBtn.removeClass('btn-success').addClass('btn-primary');
+    // disable unchecked checkboxes if three checkboxes have been checked
+    $('.category-check').removeAttr('disabled');
+    if ($('.category-check:checked').length >= 3) {
+      $('.category-check:not(:checked)').attr('disabled', '');
+    }
+  });
 
+  async function putCategoryHandler(event) {
+    console.log("submitted categories.");
+    event.preventDefault();
+
+    const $this = $(this);
+    const ids = [];
+    // extract ids from checked categories
+    $this.find('.category-check:checked').each(function () {
+      ids.push(Number($(this).attr('data-id')));
+    });
+
+    const userCategories = await newsmart.updateUserCategories(ids);
+
+    // change submit button to green
+    $categoryBtn.removeClass('btn-primary').addClass('btn-success');
+  }
 
   async function bookmarkHandler(event) {
     console.log("clicked a top article.")
