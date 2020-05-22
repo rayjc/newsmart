@@ -3,14 +3,48 @@
 {% block title %} - Search {% endblock %}
 
 {% block content %}
-<h1 class="text-center">Search Result for '{{phrase}}'</h1>
-<div id="search-articles">
-  <ul>
-    {% for article in articles %}
-      {% include 'article_item.html' %}
-    {% endfor %}
-  </ul>
+
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Start Main Wrapper
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<div class="main-wrapper ptb-80">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-9">
+        <!--~~~~~ Start Site Main ~~~~~-->
+        <main class="site-main">
+          <div class="row" id="search-articles">
+            <div class="col-12">
+              <div class="section-header">
+                <h2 class="section-title">Search Results for '{{phrase}}'</h2>
+              </div>
+            </div>
+            <!--~./ end section header ~-->
+            {% for article in articles %}
+              {% include 'article_post.html' %}
+            {% endfor %}
+
+          </div>
+        </main>
+        <!--~./ end site main ~-->
+
+        <!--~~~~~ Load More Area ~~~~~-->
+        <div class="load-more-area text-center mt-30">
+          <button class="btn btn-load-more loadmore">
+            <i class="fa fa-spinner"></i>
+            Load More
+          </button>
+          <!--/#loadmore-->
+          <span class="no-posts">No more posts</span>
+        </div>
+        <!--/.load-more-area-->
+      </div>
+
+    </div>
+  </div>
 </div>
+<!--~./ end main wrapper ~-->
+
 
 <hr>
 <div class="text-center">

@@ -154,11 +154,13 @@
       {% endfor %}
       {% endif %}
       {% endwith %}
-
-      {% block content %}
-      {% endblock %}
     </div>
+      
+    {% block content %}
+    {% endblock %}
+
   </div>
+
 
   <!-- jQuery js -->
   <script src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
