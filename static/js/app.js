@@ -7,8 +7,6 @@ $(async function(){
   const $categoryBtn = $('#category-btn')
   const newsmart = new NewSmartSession();
 
-  console.log("CONNECTED");
-
   $topDiv.on("click", "button.btn-bookmark", bookmarkHandler);
   $categoryDiv.on("click", "button.btn-bookmark", bookmarkHandler);
   $relatedDiv.on("click", "button.btn-bookmark", bookmarkHandler);
@@ -25,7 +23,6 @@ $(async function(){
   });
 
   async function putCategoryHandler(event) {
-    console.log("submitted categories.");
     event.preventDefault();
 
     const $this = $(this);
@@ -42,14 +39,12 @@ $(async function(){
   }
 
   async function bookmarkHandler(event) {
-    console.log("clicked a top article.")
-
     const $this = $(this);
     $this.empty();    // remove bookmark icon
     const hasBookmarked = $this.attr('data-bookmark-id');
     if (typeof hasBookmarked !== typeof undefined && hasBookmarked !== false) {
       const bookmark = await newsmart.removeBookmark($this.attr('data-bookmark-id'));
-
+      // update bookmark icon
       $this.removeAttr('data-bookmark-id').append('<i class="far fa-bookmark"></i>');
     } else {
       const $article = $this.parent();
@@ -59,7 +54,7 @@ $(async function(){
         $article.attr('data-img-url'), $article.attr('data-source'),
         $article.attr('data-timestamp')
       );
-
+      // update bookmark icon
       $this.attr('data-bookmark-id', bookmark.id).append('<i class="fas fa-bookmark"></i>');
     }
   }
