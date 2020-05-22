@@ -1,0 +1,587 @@
+/*------------------------------------------------------------------
+    # Components
+*/
+
+/* [ ## Alignment ] */
+.alignleft {
+	display: inline-block;
+	float: left;
+	margin-right: 30px;
+}
+
+.alignright {
+	display: inline-block;
+	float: right;
+	margin-left: 30px;
+}
+
+/* [ ## Social Share ] */
+.social-share {
+    padding-left: 0;
+    margin-bottom: 0;
+    margin-left: -5px;
+    margin-right: -5px;
+    > li {
+        display: inline-block;
+        margin: 0 3px 5px;
+        > a {
+            background-color: $color-red;
+            border-radius: 50%;
+            color: $color-white;
+            display: inline-block;
+            height: 45px;
+            line-height: 45px;
+            text-align: center;
+            width: 45px;
+            font-size: 18px;
+            transition: all 0.25s;
+            &.facebook {
+                background-color: #4460A1;
+            }
+            &.google-plus {
+                background-color: #E1533D;
+            }
+            &.twitter {
+                background-color: #5AB1F1;
+            }
+            &.youtube {
+                background-color: #C8191A;
+            }
+            &.instagram {
+                background-color: #095C91;
+            }
+            &:hover {
+                opacity: 0.8;
+            }
+        }
+    }
+}
+.social-share-two {
+    padding-left: 0;
+    margin-bottom: -5px;
+    margin-left: -5px;
+    margin-right: -5px;
+    > li {
+        display: inline-block;
+        margin: 0 3px 5px;
+        > a {
+            display: block;
+            transition: all 0.25s;
+            font-size: 14px;
+            color: $color-black;
+            width: 35px;
+            height: 35px;
+            line-height: 35px;
+            text-align: center;
+            &:hover,
+            &:focus {
+                color: $color-red;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .social-share-two > li > a {
+        height: 25px;
+        line-height: 25px;
+        width: 25px;
+    }
+}
+@media only screen and (max-width: 575px) {
+    .social-share > li > a {
+        font-size: 15px;
+        height: 40px;
+        line-height: 40px;
+        width: 40px;
+    }
+}
+
+/* [ ## Blockquote ] */
+blockquote {
+	color: $color-black;
+    text-align: center;
+	p {
+        text-align: center !important;
+		margin-bottom: 10px;
+		position: relative;
+        font-size: 28px;
+        font-family: $font-nanum;
+        font-weight: 800;
+        line-height: 1.2em;
+		&:last-child {
+			margin-bottom: 0;
+		}
+		cite {
+			margin-left: 0;
+			padding-left: 0;
+		}
+	}
+	cite, a, span {
+	    padding: 0 1.2em;
+		font-size: 0.8em;
+		font-weight: 500;
+		font-style: normal;
+		position: relative;
+	}
+	cite {
+		display: block;
+	}
+	cite::before {
+	    content: "--";
+	    padding-right: 5px;
+	}
+}
+@media only screen and (max-width: 1199px){
+    blockquote p {
+        font-size: 24px;
+    }
+}
+@media only screen and (max-width: 767px){
+    blockquote p {
+        font-size: 20px;
+    }
+}
+
+/* [ ## Magala Side Sidebar ] */
+.magala-side-sidebar {
+    width: 350px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100vh;
+    z-index: 999999;
+    transition: 0.5s cubic-bezier(0.55, 0, 0.1, 1) 0s;
+    -webkit-transform: translate3d(360px, 0, 0) !important;
+    transform: translate3d(360px, 0, 0) !important;
+    background-color: $color-white;
+    overflow-y: auto;
+    box-shadow: 0 2px 5px 3px rgba(0, 0, 0, 0.21);
+    padding-top: 50px;
+    overflow: hidden;
+    .tse-scrollbar {
+        top: 50px;
+        left: 10px;
+        right: auto;
+        width: 1px;
+        height: calc(100% - 60px);
+        background-color: #999;
+        .drag-handle {
+            width: 5px;
+            right: -2px;
+            background-color: $color-red;
+            opacity: 1;
+            margin-top: -2px;
+        }
+    }
+    .tse-content .sidebar {
+        padding: 0 30px;
+    }
+    .widget .post.side-post {
+        .entry-title {
+            font-size: 17px;
+            line-height: 1.25em;
+        }
+        > .thumb-wrap .count {
+            display: none;
+        }
+    }
+}
+.magala-close-all-window {
+    position: fixed;
+    background: rgba($color-black, 0.2);
+    top: 0;
+    right: 0;
+    left: 0;
+}
+.off-canves-opend .magala-side-sidebar {
+	visibility: visible;
+	-webkit-transform: translate3d(0, 0, 0) !important;
+	transform: translate3d(0, 0, 0) !important;
+}
+
+.off-canves-opend .magala-close-all-window {
+    bottom: 0;
+    z-index: 99999;
+    cursor: zoom-out;
+}
+.sidebar-close-button {
+    position: fixed;
+    top: 10px;
+    left: 0;
+    font-size: 22px;
+    width: 40px;
+    text-align: center;
+}
+
+/* [ ## All Filter Tabs ] */
+.filter-tab-area {
+    overflow: hidden;
+    margin-bottom: 40px;
+    .nav-tabs {
+        border-bottom: 0 solid;
+        overflow: hidden;
+        display: inline-block;
+        float: right;
+        > li {
+            display: inline-block;
+            > a {
+                height: 45px;
+                line-height: 45px;
+                border-radius: 30px;
+                display: inline-block;
+                font-size: 16px;
+                font-weight: 500;
+                padding: 0px 30px;
+                text-transform: capitalize;
+                font-weight: 500;
+                -webkit-transition: all 0.25s ease 0s;
+                transition: all 0.25s ease 0s;
+                i {
+                    display: inline-block;
+                    margin-right: 5px;
+                }
+                &.active {
+                    background-color: $color-red;
+                    color: $color-white;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 1199px){ 
+    .filter-tab-area {
+        margin-bottom: 35px;
+        .nav-tabs > li > a {
+            font-size: 15px;
+            height: 40px;
+            line-height: 40px;
+            padding: 0 20px;
+        }
+    }
+}
+@media only screen and (max-width: 991px){ 
+    .filter-tab-area .nav-tabs {
+        float: none;
+    }
+}
+
+@media only screen and (max-width: 575px){ 
+    .filter-tab-area {
+        margin-bottom: 25px;
+        .nav-tabs > li > a {
+            font-size: 13px;
+            height: 35px;
+            line-height: 35px;
+            padding: 0 14px;
+        }
+    }
+}
+
+
+/* [ ## Progress Circle ] */
+$borderWidth: 2px;
+$animationTime: 1.5s;
+$border-color-default: #eee;
+$size: 70px;
+//Create how many steps
+$howManySteps: 10; 
+.progress {
+    width: $size;
+    height: $size;
+    line-height: $size;
+    background: none;
+    margin: 0 auto;
+    box-shadow: none;
+    position: relative;
+    &:after {
+        content: "";
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: $borderWidth solid $border-color-default;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+  > div {
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+  }
+  .progress-left {
+    left: 0;
+  }
+  .progress-bar {
+    width: 100%;
+    height: 100%;
+    background: none;
+    border-width: $borderWidth;
+    border-style: solid;
+    position: absolute;
+    top: 0;
+    border-color: $color-red;
+  }
+  .progress-left .progress-bar {
+    left: 100%;
+    border-top-right-radius: ($size/2);;
+    border-bottom-right-radius: ($size/2);;
+    border-left: 0;
+    -webkit-transform-origin: center left;
+    transform-origin: center left;
+    //animation: loading-2 1.5s linear forwards 1.8s;
+  }
+  .progress-right {
+    right: 0;
+    .progress-bar {
+      left: -100%;
+      border-top-left-radius: ($size/2);;
+      border-bottom-left-radius: ($size/2);;
+      border-right: 0;
+      -webkit-transform-origin: center right;
+      transform-origin: center right;
+      //animation: loading-1 1.8s linear forwards;
+    }
+  }
+    .progress-value {
+        display: flex;
+        border-radius: 50%;
+        font-size: 24px;
+        text-align: center;
+        line-height: 20px;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        font-weight: 500;
+        color: $color-black;
+        width: 100%;
+    }
+}
+
+/* This for loop creates the 	necessary css animation names 
+Due to the split circle of progress-left and progress right, we must use the animations on each side. 
+*/
+@for $i from 1 through $howManySteps {
+	$stepName: ($i*(100 / $howManySteps));
+
+	//animation only the left side if below 50%
+	@if $i <= ($howManySteps/2) { 
+		.progress[data-percentage="#{$stepName}"] {
+			.progress-right .progress-bar {
+				animation: loading-#{$i} $animationTime linear forwards;
+			}
+			.progress-left .progress-bar {animation: 0;}
+		}
+	}
+	//animation only the right side if above 50%
+	@if $i > ($howManySteps/2)  {  
+		.progress[data-percentage="#{$stepName}"] {
+			.progress-right .progress-bar {
+				animation: loading-#{($howManySteps/2)} $animationTime linear forwards; //set the animation to longest animation
+			}
+			.progress-left .progress-bar {
+      animation: loading-#{$i - ($howManySteps/2)} $animationTime linear forwards $animationTime;
+    }
+		}
+	}
+}
+//animation
+@for $i from 1 through ($howManySteps/2) { 
+	$degrees: (180/($howManySteps/2));
+	$degrees: ($degrees*$i);
+	@keyframes loading-#{$i}{
+    0%{
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100%{
+        -webkit-transform: rotate($degrees);
+			transform: rotate(#{$degrees}deg);
+    }
+	}
+}
+
+
+/*-------------------------------------------------
+    [ ## Carousel Nav Dots, Circle  Align Center ]
+*/
+.carousel-nav-dots {
+    .owl-dots {
+        margin-bottom: -5px;
+        text-align: center;
+        padding-top: 25px;
+        &.disabled {
+            display: block;
+        }
+        > div {
+            display: inline-block;
+            margin: 0 6px;
+            border-radius: 50%;
+            > span {
+                background-color: #DDDDDD;
+                border-radius: 50%;
+                display: block;
+                height: 12px;
+                -webkit-transition: all 0.2s ease 0s;
+                transition: all 0.2s ease 0s;
+                width: 12px;
+            }
+            &.active > span {
+                background-color: $color-red;
+            }
+        }
+    }
+}
+
+.carousel-nav-circle {
+    .owl-nav {
+        margin: 0 -3px;
+        &.disabled {
+            display: block;
+        }
+        > div {
+            display: inline-block;
+            margin: 0 3px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            background-color: rgba($color-white,0.2);
+            line-height: 40px;
+            color: $color-black;
+            text-align: center;
+            font-size: 22px;
+            transition: all 0.25s ease-in 0s;
+            &:hover {
+                background-color: $color-red;
+                color: $color-white;
+            }
+        }
+    }
+}
+
+.carousel-nav-align-center {
+    .owl-nav {
+        &.disabled {
+            display: block;
+        }
+        > div {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            color: $color-white;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 28px;
+            transition: all 0.25s ease-in 0s;
+            position: absolute;
+            top: calc(50% - 25px);
+            &:hover {
+                color: $color-red;
+                background-color: $color-white;
+            }
+            &.owl-prev {
+                left: calc(50% - 695px);
+            }
+            &.owl-next {
+                right: calc(50% - 695px);
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 1620px){ 
+    .carousel-nav-align-center .owl-nav > div {
+        &.owl-prev {
+            left: calc(50% - 590px);
+        }
+        &.owl-next {
+            right: calc(50% - 590px);
+        }
+    }
+}
+
+@media only screen and (max-width: 1199px){ 
+    .carousel-nav-align-center .owl-nav > div {
+        &.owl-prev {
+            left: calc(50% - 465px);
+        }
+        &.owl-next {
+            right: calc(50% - 465px);
+        }
+    }
+}
+
+@media only screen and (max-width: 991px){ 
+    .carousel-nav-align-center .owl-nav > div {
+        &.owl-prev {
+            left: 15px;
+        }
+        &.owl-next {
+            right: 15px;
+        }
+    }
+}
+@media only screen and (max-width: 575px){ 
+    .carousel-nav-dots .owl-dots > div {
+        margin: 0 4px;
+        > span {
+            height: 10px;
+            width: 10px;
+        }
+    }
+    .carousel-nav-align-center .owl-nav > div {
+        font-size: 24px;
+        height: 40px;
+        line-height: 40px;
+        top: calc(50% - 20px);
+        width: 40px;
+    }
+}
+
+
+/*-------------------------------------------------
+    [ ## Scroll Top ]
+*/
+.topbutton {
+    color: $color-white;
+    bottom: 50px;
+    display: block;
+    height: 50px;
+    line-height: 50px;
+    position: fixed;
+    right: 20px;
+    text-align: center;
+    width: 50px;
+    border-radius: 50%;
+    -webkit-transition: all 0.3s; 
+    transition: all 0.3s;
+    z-index: 999;
+    font-size: 20px;
+    background-color: $color-red;
+    
+    &.btn-show {
+        opacity: 1;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+    &.btn-hide {
+        opacity: 0;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+        -webkit-transform: translateY(40px);
+        transform: translateY(40px);
+    }
+    &:hover {
+        color: $color-white !important;
+        opacity: 0.9;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+    }
+    &:focus {
+        color: $color-white !important;
+    }
+}

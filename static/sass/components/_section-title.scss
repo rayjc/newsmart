@@ -1,0 +1,178 @@
+/*------------------------------------------------------------------
+    # Section Header
+*/
+
+/* [ ## Headline ] */
+.section-header{
+    margin: -8px 0 35px;
+    .section-title {
+        font-size: 36px;
+        font-weight: 800; 
+        margin-bottom: 15px;
+        line-height: 1.2em;
+    }
+    &.style-two {
+        .section-title {
+            font-family: $font-playfair;
+        }
+    }
+    &.style-three,
+    &.style-four {
+        .section-title {
+            font-family: $font-prata;
+            font-weight: normal;
+            text-transform: capitalize
+        }
+    }
+    &.style-four {
+        .section-title {
+            margin-bottom: 60px;
+            > span {
+                display: inline-block;
+                border-bottom: 2px solid $color-black;
+                padding-bottom: 9px;
+            }
+        }
+    }
+}
+.headline {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 25px;
+}
+
+/* [ ## Breadcrumb ] */
+.breadcrumb {
+    background-color: transparent;
+    border-radius: 0;
+    margin-bottom: 0;
+    padding: 0;
+    .breadcrumb-item {
+        font-size: 14px;
+        font-weight: 500;
+        text-transform: capitalize;
+        > a {
+            color: $color-black;
+            &:hover,
+            &:focus {
+                color: $color-red;
+            }
+        }
+        &:before {
+            content: "";
+            font-family: $font-awesome;
+            padding: 0 20px 0 15px;
+        }
+        &:first-child:before {
+            content: "\f015";
+            color: $color-red !important;
+            padding: 0 10px 0 0px;
+        }
+    }
+}
+
+/* [ ## Page Title ] */
+.page-title-area {
+    background-color: #F2F2F2;
+    &:before {
+        background-color: rgba($color-black, 0.7);
+    }
+    .page-header-content {
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+                justify-content: space-between;
+    }
+    .page-header-caption > h1 {
+        margin-bottom: 5px;
+        font-size: 38px;
+        font-weight: 800;
+        font-family: $font-nanum;
+        text-transform: capitalize;
+        line-height: 1.35em;
+    }
+    &.text-white {
+        .page-header-caption > h1 {
+            color: $color-white;
+        }
+        .breadcrumb .breadcrumb-item {
+            color: #cfcfcf;
+            > a {
+                color: $color-white;
+                &:hover,
+                &:focus {
+                    color: $color-red;
+                }
+            }
+            &:before {
+                color: #CFCFCF;
+            }
+        }
+    }
+}
+
+
+@media only screen and (max-width: 1199px){
+    .section-header {
+        margin: -8px 0 30px;
+        .section-title {
+            font-size: 32px;
+        }
+    }
+    .page-title-area .page-header-caption > h1 {
+        font-size: 32px;
+    }
+}
+@media only screen and (max-width: 991px){
+    .section-header.style-four .section-title {
+        margin-bottom: 45px;
+    }
+    .page-title-area .page-header-content {
+        display: block;
+        text-align: center;
+        .page-header-caption > h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+    }
+    .breadcrumb-area .breadcrumb {
+        display: inline-block;
+        .breadcrumb-item {
+            display: inline-block;
+        }
+    }
+}
+@media only screen and (max-width: 767px){
+    .section-header .section-title {
+        font-size: 28px;
+    }
+    .page-title-area .page-header-content .page-header-caption > h1 {
+        font-size: 26px;
+        margin-bottom: 15px;
+    }
+    .breadcrumb-area .breadcrumb {
+        display: inline-block;
+        .breadcrumb-item {
+            font-size: 12px;
+            &:before {
+                padding: 0 6px 0 5px;
+            }
+            &:first-child:before {
+                padding: 0 5px 0 0;
+            }
+        }
+    }
+}
+@media only screen and (max-width: 575px){
+    .section-header {
+        margin: -8px 0 30px;
+        .section-title {
+            font-size: 24px;
+        }
+    }
+}

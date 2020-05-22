@@ -1,0 +1,113 @@
+/*------------------------------------------------------------------
+    # Sidebar 
+*/
+.sidebar {
+    margin-bottom: -60px;
+    .widget {
+        &.widget-categories ul {
+            padding-top: 3px;
+            > li {
+                &:nth-child(6n-5) > a .count {
+                    background-color: $color-red;
+                }
+                &:nth-child(6n-4) > a .count {
+                    background-color: #E37050;
+                }
+                &:nth-child(6n-3) > a .count {
+                    background-color: #00CECA;
+                }
+                &:nth-child(6n-2) > a .count {
+                    background-color: $color-pink;
+                }
+                &:nth-child(6n-1) > a .count {
+                    background-color: $color-green;
+                }
+                &:nth-child(6n) > a .count {
+                    background-color: #5AB1F1;
+                }
+                > a {
+                    color: $color-black;
+                }
+            }
+        }
+        &.bt-instafeed-widget #instafeed {
+            -ms-flex-wrap: wrap;
+                flex-wrap: wrap;
+            margin: 0 -5px -5px;
+            padding-top: 10px;
+            > .feed-item {
+                -webkit-box-flex: 0;
+                    -ms-flex: 0 0 33.33%;
+                        flex: 0 0 33.33%;
+                max-width: 33.33%;
+                padding: 5px;
+                img {
+                    border-radius: 10px;
+                }
+            }
+        }
+    } 
+    &.sidebar-style-two {
+        .widget-title {
+            font-family: $font-prata;
+            font-weight: normal;
+            &:before {
+                background-color: transparent;
+            }
+        }
+        .progress .progress-bar {
+            border-color: $color-black !important;
+        }
+        .post.side-post {
+            .thumb-wrap {
+                border-radius: 0px;
+                img {
+                    border-radius: 0px;
+                }
+                .count {
+                    background-color: $color-black;
+                }
+            }
+            .entry-title {
+                font-size: 18px;
+                font-family: $font-prata;
+                font-weight: normal;
+                line-height: 1.2em;
+                margin-top: -2px;
+            }
+        }
+        .widget.tb-subscribe-widget {
+            .subscribe-box {
+                border-radius: 0px;
+                input[type="email"] {
+                    border-radius: 0px;
+                }
+            }
+            .subscribe-form #subscribe-btn {
+                background-color: $color-black;
+                border-radius: 0px;
+                &:hover {
+                    background-color: $color-red !important;
+                }
+            }
+        }
+        .widget.widget-text .widget-content a img {
+            border-radius: 0;
+        }
+    }
+}
+
+@media only screen and (max-width: 1199px){ 
+    .sidebar {
+        margin-bottom: -40px;
+    }
+}
+@media only screen and (max-width: 991px){ 
+    .sidebar {
+        margin-top: 80px;
+        &.pb-60 {
+            margin-bottom: -30px;
+            margin-top: 0px;
+        }
+    }
+}

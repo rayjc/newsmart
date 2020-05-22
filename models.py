@@ -10,7 +10,7 @@ from logger import logger
 
 db = SQLAlchemy()
 
-DEFAULT_IMG_URL = "static/image/question-mark.jpg"
+DEFAULT_IMG_URL = "static/images/question-mark.jpg"
 NEWS_CATEGORIES = ("business", "entertainment", "general",
                    "health", "science", "sports", "technology")
 

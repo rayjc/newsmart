@@ -44,17 +44,17 @@ $(async function(){
     
     const hasBookmarked = $this.attr('data-bookmark-id');
     if (typeof hasBookmarked !== typeof undefined && hasBookmarked !== false) {
+      const bookmark = await newsmart.removeBookmark($this.attr('data-bookmark-id'));
+
+      $this.empty();  // remove bookmark icon
+      // update bookmark icon
+      $this.removeAttr('data-bookmark-id').append('<i class="far fa-bookmark"></i>');
+    } else {
       $this.empty();    // remove bookmark icon
       // add spinner
       const $span = $('<span>').addClass("spinner-border spinner-border-sm").attr('role', 'status');
       $this.append($span);
-
-      const bookmark = await newsmart.removeBookmark($this.attr('data-bookmark-id'));
-
-      $this.empty();  // remove spinner
-      // update bookmark icon
-      $this.removeAttr('data-bookmark-id').append('<i class="far fa-bookmark"></i>');
-    } else {
+      
       const $article = $this.parent();
       const bookmark = await addBookmark(
         $article.attr('data-title'), $article.attr('data-summary'),
@@ -63,7 +63,7 @@ $(async function(){
         $article.attr('data-timestamp')
       );
       
-      $this.empty();    // remove bookmark icon
+      $this.empty();    // remove spinner
       // update bookmark icon
       $this.attr('data-bookmark-id', bookmark.id).append('<i class="fas fa-bookmark"></i>');
     }
