@@ -44,7 +44,7 @@ class NewSmart(NewsApiSession, NLUApiSession):
                 phrase = " ".join(tags)
                 # search articles based on phrase
                 articles = self.search_articles(phrase, size=3,
-                                                exclude_domains=NewSmart.video_urls)
+                                                exclude_domains=NewSmart.video_urls) or []
                 related_articles.extend(articles)
         return related_articles
 

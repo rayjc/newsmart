@@ -27,7 +27,7 @@ class BaseApiSession:
                 raise
             return None
         except requests.RequestException as e:
-            logger.error(f"GET request: {e} - body: {e.request.body.decode()}")
+            logger.error(f"GET request: {e}")
             if os.environ.get("FLASK_ENV") == "development":
                 raise
             return None
@@ -69,7 +69,7 @@ class BaseApiSession:
                 raise
             return None
         except requests.RequestException as e:
-            logger.error(f"DELETE request: {e} - body: {e.request.body.decode()}")
+            logger.error(f"DELETE request: {e}")
             if os.environ.get("FLASK_ENV") == "development":
                 raise
             return None
