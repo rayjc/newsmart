@@ -1,0 +1,45 @@
+<article class="post hentry post-list post-list-small">
+	<div class="entry-thumb">
+		<figure class="thumb-wrap">
+			<a href="{{article['url']}}">
+				<img
+					src="{{article['img_url']}}"
+					alt="post">
+			</a>
+			<div class="featured-badge-list">
+        <a class="featured remove-bookmark" href="#" data-bookmark-id="{{bookmark_map[article.url]}}">
+          <span class="far fa-trash-alt"></span>
+        </a>
+			</div>
+			<!--./ featured-badge-list -->
+		</figure>
+		<!--./ thumb-wrap -->
+	</div>
+	<!--./ entry-thumb -->
+	<div class="content-entry-wrap">
+		<div class="entry-content">
+			<h3 class="entry-title">
+				<a href="{{article['url']}}">{{article['title']}}</a>
+			</h3>
+			<!--./ entry-title -->
+		</div>
+		<!--./ entry-content -->
+		<div class="entry-meta-content">
+			<div class="entry-date">
+				<span>{{article['timestamp']}}</span>
+			</div>
+			<!-- ./ entry-date -->
+			<div class="entry-meta-author">
+				<div class="entry-author-name">
+					<span>{{article['source']}}</span>
+				</div>
+			</div>
+    </div>
+    <div>
+      {% for tag in article.tags %}
+      <span class="badge badge-info">{{tag.keyword}}</span>
+      {% endfor %}
+    </div>
+	</div>
+	<!--./ content-entry-wrap -->
+</article>

@@ -11,7 +11,7 @@ $(function (){
   console.log('CONNECTED');
 
   $topDiv.on("click", "a.btn-bookmark", bookmarkHandler);
-  $categoryDiv.on("click", "button.btn-bookmark", bookmarkHandler);
+  $categoryDiv.on("click", "a.btn-bookmark", bookmarkHandler);
   $relatedDiv.on("click", "a.btn-bookmark", bookmarkHandler);
   $searchDiv.on("click", "a.btn-bookmark", bookmarkHandler);
   $categoryForm.on("submit", putCategoryHandler);
@@ -24,9 +24,10 @@ $(function (){
       $('.category-check:not(:checked)').attr('disabled', '');
     }
   });
-  $bookmarkDiv.on("click", "button.remove-bookmark", async function(){
+  $bookmarkDiv.on("click", "a.remove-bookmark", async function(){
+    event.preventDefault();
     const $this = $(this);
-    $this.closest('li').remove();
+    $this.closest('article').parent().remove();
     await newsmart.removeBookmark($this.attr('data-bookmark-id'));
   });
 
