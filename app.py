@@ -276,6 +276,13 @@ def create_bookmark():
     """
     article_id = request.json.get('article_id')
     if article_id and isinstance(article_id, int):
+        # check if bookmark already exists
+        bookmark = Saves.query.filter(
+            Saves.article_id == article_id, Saves.user_id == g.user.id
+        ).one_or_none()
+        if bookmark:
+            return (jsonify({"bookmark": bookmark.serialize()}), 200)
+        # create a new bookmark
         bookmark = Saves.new(g.user.id, article_id)
         return (
             (jsonify({"bookmark": bookmark.serialize()}), 201)
