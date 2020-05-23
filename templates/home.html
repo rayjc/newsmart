@@ -13,7 +13,7 @@
     <h2>{{category|capitalize}}</h2>
     <ul>
       {% for article in articles %}
-        {% include 'article_item.html' %}
+        {% include 'articles/article_item.html' %}
       {% endfor %}
     </ul>
   </div>
@@ -39,7 +39,7 @@
         <div id="popular-posts-carousel" class="owl-carousel carousel-nav-circle">
           {% for article in related_articles %}
             {% if article.url not in bookmarked_urls %}
-              {% include 'article_carousel.html' %}
+              {% include 'articles/article_carousel.html' %}
             {% endif %}
           {% endfor %}
         </div>
@@ -70,7 +70,7 @@
             <!--~./ end section header ~-->
             {% for article in top_articles %}
               <div class="col-12 load-post">
-                {% include 'article_post.html' %}
+                {% include 'articles/article_post.html' %}
               </div>
             {% endfor %}
 
