@@ -161,6 +161,79 @@
 
   </div>
 
+  <!--********************************************************-->
+  <!--********************** SITE FOOTER *********************-->
+  <!--********************************************************-->
+  <footer class="site-footer footer-default-style bg-black pt-80">
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              Start Footer Widget Area
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <div class="footer-widget-area pb-20">
+      <div class="container">
+        <div class="row">
+          <!--~~~~~ Start Widget About us Info ~~~~~-->
+          <div class="col-lg-4">
+            <aside class="widget bt-about-us-widget">
+              <div class="widget-content">
+                <article class="post side-post">
+                  <div class="thumb-wrap">
+                    <a href="https://github.com/rayjc/newsmart">
+                      <i class="fab fa-github fa-3x"></i>
+                    </a>
+                  </div>
+                  <div class="content-entry-wrap">
+                    NewSmart is proud to serve you news in an intelligent fashion via the use of Natural Language Processing!
+                  </div>
+                </article>
+            </aside>
+          </div>
+          <!--~./ end about us widget ~-->
+  
+          <!--~~~~~ Start Latest Posts Widget~~~~~-->
+          <div class="col-lg-4">
+            <aside class="widget latest-posts-widget">
+              <div class="widget-content">
+                <article class="post side-post">
+                  <div class="thumb-wrap">
+                    <a href="https://www.ibm.com/cloud/watson-natural-language-understanding">
+                      <img src="{{url_for('static', filename='images/icon/ibm-watson.ico')}}" alt="ibm-watson-icon">
+                    </a>
+                  </div>
+                  <div class="content-entry-wrap">
+                    Powered by IBM Watson Natural Language Understanding.
+                  </div>
+                </article>
+              </div>
+            </aside>
+          </div>
+          <!--~./ end latest posts widget ~-->
+  
+          <!--~~~~~ Start Widget categories ~~~~~-->
+          <div class="col-lg-4">
+            <div class="widget widget-categories">
+              <div class="widget-content">
+                <article class="post side-post">
+                  <div class="thumb-wrap">
+                    <a href="https://newsapi.org/">
+                      <img src="{{url_for('static', filename='images/icon/newsapi.ico')}}" alt="news-api-icon" class="bg-light">
+                    </a>
+                  </div>
+                  <div class="content-entry-wrap">
+                    Powered by NewsApi.org.
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+          <!--~./ end widget address ~-->
+        </div>
+      </div>
+    </div>
+    <!--~./ end footer widgets area ~-->
+
+  </footer>
+  <!--~./ end site footer ~-->
+
 
   <!-- jQuery js -->
   <script src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
