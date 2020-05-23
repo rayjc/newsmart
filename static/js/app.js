@@ -27,7 +27,10 @@ $(function (){
   $bookmarkDiv.on("click", "a.remove-bookmark", async function(){
     event.preventDefault();
     const $this = $(this);
-    $this.closest('article').parent().remove();
+
+    $this.closest('article').parent().fadeOut(300, function() {
+      $(this).remove();
+    });
     await newsmart.removeBookmark($this.attr('data-bookmark-id'));
   });
 
