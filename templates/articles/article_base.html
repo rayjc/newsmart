@@ -38,7 +38,7 @@
     <!--./ entry-content -->
     <div class="entry-meta-content">
       <div class="entry-date">
-        <span>{{article['publishedAt'] if article['publishedAt']}}</span>
+        <span>{{article['publishedAt']|replace('T', ' ')|replace('Z', ' UTC') if article['publishedAt']}}</span>
       </div>
       <!-- ./ entry-date -->
       <div class="entry-meta-author">
