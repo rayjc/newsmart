@@ -54,7 +54,7 @@ def home_view():
     """
     top_articles = newsmart.get_top_articles()
     bookmarked_urls = newsmart.get_bookmarked_urls()
-    category_map = newsmart.get_user_category_articles()
+    category_map = newsmart.get_user_category_articles(limit=12)
     related_articles = newsmart.get_recommended_articles()
     bookmark_map = newsmart.get_bookmark_url_to_id()
 
@@ -64,6 +64,7 @@ def home_view():
         category_map=category_map,
         related_articles=related_articles,
         bookmark_map=bookmark_map,
+        categories=NEWS_CATEGORIES,
     )
 
 
@@ -84,7 +85,10 @@ def category_detail_view(category):
         abort(404)
 
     articles = newsmart.get_top_articles(category=category)
-    return render_template('category_detail.html', articles=articles, category=category)
+    return render_template(
+        'category_detail.html', articles=articles,
+        category=category, categories=NEWS_CATEGORIES,
+    )
 
 
 @app.route('/search')
@@ -107,7 +111,8 @@ def search_view():
     return render_template(
         'search.html', phrase=phrase, articles=articles,
         bookmarked_urls=bookmarked_urls,
-        bookmark_map=bookmark_map
+        bookmark_map=bookmark_map,
+        categories=NEWS_CATEGORIES,
     )
 
 
@@ -134,7 +139,8 @@ def login_view():
         flash("Username and password do not match!", 'danger')
 
     return render_template(
-        'login.html', form=form, form_id="login-form", submit_button="Log in"
+        'login.html', form=form, form_id="login-form", submit_button="Log in",
+        categories=NEWS_CATEGORIES,
     )
 
 
@@ -176,7 +182,8 @@ def signup_view():
 
     else:
         return render_template(
-            'signup.html', form=form, form_id="signup-form", submit_button="Sign up!"
+            'signup.html', form=form, form_id="signup-form", submit_button="Sign up!",
+            categories=NEWS_CATEGORIES,
         )
 
 
@@ -200,10 +207,12 @@ def user_profile_view():
 
     bookmarks = g.user.articles
     categories = Category.query.all()
+    bookmark_map = newsmart.get_bookmark_url_to_id()
 
     return render_template(
-        "user_profile.html", form=form, submit_button="Update User", bookmarks=bookmarks,
-        categories=categories
+        "user_profile.html", form=form, submit_button="Update User",
+        bookmarks=bookmarks, bookmark_map=bookmark_map, category_objs=categories,
+        categories=NEWS_CATEGORIES,
     )
 
 
@@ -267,6 +276,13 @@ def create_bookmark():
     """
     article_id = request.json.get('article_id')
     if article_id and isinstance(article_id, int):
+        # check if bookmark already exists
+        bookmark = Saves.query.filter(
+            Saves.article_id == article_id, Saves.user_id == g.user.id
+        ).one_or_none()
+        if bookmark:
+            return (jsonify({"bookmark": bookmark.serialize()}), 200)
+        # create a new bookmark
         bookmark = Saves.new(g.user.id, article_id)
         return (
             (jsonify({"bookmark": bookmark.serialize()}), 201)

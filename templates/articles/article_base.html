@@ -1,0 +1,54 @@
+<article class="post hentry {% block class %}{% endblock %}" data-title="{{article['title']}}"
+  data-content="{{article['content'] if article['content']}}" data-url="{{article['url']}}"
+  data-source="{{article['source']['name']}}" data-summary="{{article['description'] if article['description']}}"
+  data-img-url="{{article['urlToImage'] if article['urlToImage']}}"
+  data-timestamp="{{article['publishedAt'] if article['publishedAt']}}">
+  <div class="entry-thumb">
+    <figure class="thumb-wrap">
+      <a href="{{article['url']}}">
+        <img
+          src="{{article['urlToImage'] if article['urlToImage'] else url_for('static', filename='images/question-mark.jpg')}}"
+          alt="post">
+      </a>
+      {% if g.user %}
+      <div class="featured-badge-list">
+        {% if article.url in bookmarked_urls %}
+        <a class="trending btn-bookmark" href="#" data-bookmark-id="{{bookmark_map[article.url]}}">
+          <span class="fas fa-bookmark"></span>
+        </a>
+        {% else %}
+        <a class="trending btn-bookmark" href="#">
+          <span class="far fa-bookmark"></span>
+        </a>
+        {% endif %}
+      </div>
+      <!--./ featured-badge-list -->
+      {% endif %}
+    </figure>
+    <!--./ thumb-wrap -->
+  </div>
+  <!--./ entry-thumb -->
+  <div class="content-entry-wrap">
+    <div class="entry-content">
+      <h3 class="entry-title">
+        <a href="{{article['url']}}">{{article['title']}}</a>
+      </h3>
+      <!--./ entry-title -->
+    </div>
+    <!--./ entry-content -->
+    <div class="entry-meta-content">
+      <div class="entry-date">
+        <span>{{article['publishedAt']|replace('T', ' ')|replace('Z', ' UTC') if article['publishedAt']}}</span>
+      </div>
+      <!-- ./ entry-date -->
+      <div class="entry-meta-author">
+        <div class="entry-author-name">
+          <span>{{article['source']['name']}}</span>
+        </div>
+      </div>
+    </div>
+    {% block extra_content %}
+    {% endblock %}
+  </div>
+  <!--./ content-entry-wrap -->
+</article>

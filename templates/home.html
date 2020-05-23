@@ -3,46 +3,144 @@
 {% block title %} - Home {% endblock %}
 
 {% block content %}
-<h1 class="text-center">Top News</h1>
-<div id="top-articles">
-  <ul>
-    {% for article in top_articles %}
-      {% include 'article_item.html' %}
-    {% endfor %}
-  </ul>
-</div>
 
 {% if g.user %}
-<hr>
-<h1 class="text-center">Your favorite categories</h1>
-<div id="category-articles">
-  {% for category, articles in category_map.items() %}
-  <div>
-    <h2>{{category|capitalize}}</h2>
-    <ul>
-      {% for article in articles %}
-        {% include 'article_item.html' %}
-      {% endfor %}
-    </ul>
-  </div>
-  {% endfor %}
-</div>
 
-<hr>
-<h1 class="text-center">You might also like</h1>
-<div id="related-articles">
-  <ul>
-    {% for article in related_articles %}
-      {% if article.url not in bookmarked_urls %}
-        {% include 'article_item.html' %}
-      {% endif %}
-    {% endfor %}
-  </ul>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Start Frontpage Related Posts
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<div class="frontpage-popular-posts ptb-80">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="section-header">
+          <h2 class="section-title">Recommended For You</h2>
+        </div>
+        <!--~./ end section header ~-->
+      </div>
+    </div>
+
+    <div class="row" id="related-articles">
+      <div class="col-12">
+        <div id="popular-posts-carousel" class="owl-carousel carousel-nav-circle">
+          {% for article in related_articles %}
+          {% if article.url not in bookmarked_urls %}
+          {% include 'articles/article_grid.html' %}
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+<!--~./End frontpage related posts ~-->
+
+
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Start Category Blocks
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<div class="top-stories-block top-stories-one bg-gray ptb-80">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="section-header">
+          <h2 class="section-title">Your Favorite Categories</h2>
+        </div>
+      </div>
+      <!--./ section-header -->
+
+      <div class="col-lg-6">
+        <div class="filter-tab-area">
+          <ul class="nav nav-tabs" role="tablist">
+            {% for category in category_map.keys()%}
+            <li>
+              <a class="{{'active' if loop.index == 1}}" data-toggle="tab" href="#{{category}}-tab" role="tab">{{category|capitalize}}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <!--~./ end filter tab area ~-->
+      </div>
+    </div>
+
+    <div class="row" id="category-articles">
+      <div class="col-12">
+        <div class="tab-content filter-tab-content">
+          {% for category, articles in category_map.items() %}
+          <!--~~~~~ Start Tab Pane ~~~~~-->
+          <div class="tab-pane fade{{' show active' if loop.index == 1}}" id="{{category}}-tab" role="tabpanel">
+            <div class="row">
+              {% for article in articles[:3] %}
+              <!--~~~~~ Start Post ~~~~~-->
+              <div class="col-lg-4 col-md-6">
+                {% include 'articles/article_grid.html' %}
+              </div>
+              <!--~./ end post ~-->
+              {% endfor %}
+
+              {% for article in articles[3:] %}
+              <!--~~~~~ Start Post ~~~~~-->
+              <div class="col-lg-4 col-md-6">
+                {% include 'articles/article_post_small.html' %}
+              </div>
+              <!--~./ end post ~-->
+              {% endfor %}
+            </div>
+          </div>
+          <!--~./ end tab pane ~-->
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!--~./ end category blocks ~-->
+
 {% endif %}
 
-<hr>
-<div class="text-center">
-  <a href="{{url_for('home_view')}}">Home</a>
+
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Start Main Wrapper
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<div class="main-wrapper ptb-80">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-9">
+        <!--~~~~~ Start Site Main ~~~~~-->
+        <main class="site-main">
+          <div class="row" id="top-articles">
+            <div class="col-12">
+              <div class="section-header">
+                <h2 class="section-title">Around The World</h2>
+              </div>
+            </div>
+            <!--~./ end section header ~-->
+            {% for article in top_articles %}
+              <div class="col-12 load-post">
+                {% include 'articles/article_post.html' %}
+              </div>
+            {% endfor %}
+
+          </div>
+        </main>
+        <!--~./ end site main ~-->
+
+        <!--~~~~~ Load More Area ~~~~~-->
+        <div class="load-more-area text-center mt-30">
+          <button class="btn btn-load-more loadmore">
+            <i class="fa fa-spinner"></i>
+            Load More
+          </button>
+          <!--/#loadmore-->
+          <span class="no-posts">No more posts</span>
+        </div>
+        <!--/.load-more-area-->
+      </div>
+
+    </div>
+  </div>
 </div>
+<!--~./ end main wrapper ~-->
+
 {% endblock %}

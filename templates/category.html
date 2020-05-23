@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1 class="text-center">Category</h1>
-<div>
+<div class="container">
   <ul>
     {% for category in categories %}
     <li>
@@ -14,8 +14,4 @@
   </ul>
 </div>
 
-<hr>
-<div class="text-center">
-  <a href="{{url_for('home_view')}}">Home</a>
-</div>
 {% endblock %}

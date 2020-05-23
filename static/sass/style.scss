@@ -1,0 +1,100 @@
+/*************************************************************************
+    Template Name: Magala
+    Template URI: https://themeforest.net/user/tortoiz
+    Description: A 'magala – Magazine and Blog Template' is perfect if you like a clean and modern design. This theme is ideal for Magazine, Blog, Post, Travel, Personal, and those who need an easy, attractive and effective way to share their work with clients.
+    Author: tortoiz
+    Version: 1.0
+    Author URI: http://tortoizthemes.com
+    
+    
+    Note: style css.
+*************************************************************************/
+
+/*--------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+# Google Fonts
+# Typography
+    [ ## Elements ]
+    [ ## White Space ]
+# Button Style
+    [ ## Button ]
+    [ ## Fields ]
+# Section Header (With All Section Heading)
+    [ ## Headline ]
+    [ ## Breadcrumb ]
+    [ ## Page Title ]
+# Button Style
+    [ ## Button ]
+    [ ## Fields ]
+# Components
+    [ ## Alignment ]
+    [ ## Social Share ]
+    [ ## Blockquote ]
+    [ ## Magala Side Sidebar ]
+    [ ## All Filter Tabs ]
+    [ ## Progress Circle ]
+    [ ## Carousel Nav Dots, Circle  Align Center ]
+    [ ## Scroll Top ]
+# Navigation
+    [ ## Links ]
+    [ ## Menus ]
+        [ ### Main Menu ]
+        [ ### Mobile Menu ]
+        [ ### Sidebar Menu ]
+    [ ## Pagination ]
+        [ ### Navigation ]
+        [ ### Post Navigation ]
+# Site Header ( All Site Header Style )
+    [ ## Search ]
+# Post
+    [ ## Post Element ]
+    [ ## Default Post ]
+    [ ## Gid Post ]
+    [ ## List Post ]
+# Single Posts
+    [ ## Related Post ]
+    [ ## Post Author ]
+    [ ## Comment Respond ]
+# Magazine And Blog Element
+    [ ## Top Stories ]
+    [ ## Posts Video Channels ]
+    [ ## Posts Special ]
+    [ ## Frontpage Cat Posts ]
+    [ ## Popular Posts ]
+    [ ## Trending Posts ]
+# Slider
+# Featured ( All Featured Style )
+# Services
+# Testimonail Section
+# Foods Menu Section
+# Page Layouts
+    [ ## Baeaking News ]
+    [ ## Instagram Area ]
+    [ ## Newsletter ]
+    [ ## About Us ]
+    [ ## Main Wrapper ]
+    [ ## Frontpage Cat ]
+    [ ## Promo Section ]
+# Sidebar
+# Widget
+# Site Footer
+--------------------------------------------------------------*/
+
+
+@import 'base/variables';
+@import 'base/base';
+@import 'components/buttons-fields';
+@import 'components/section-title';
+@import 'components/components';
+@import 'navigation/navigation';
+@import 'layouts/header';
+@import 'layouts/post';
+@import 'layouts/single-post';
+@import 'layouts/magazine-blog';
+@import 'layouts/slider';
+@import 'layouts/featured';
+@import 'layouts/layouts';  
+@import 'layouts/sidebar'; 
+@import 'layouts/widgets'; 
+@import 'layouts/footer'; 

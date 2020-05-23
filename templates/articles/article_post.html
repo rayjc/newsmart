@@ -1,0 +1,9 @@
+{% extends 'articles/article_base.html' %}
+
+{% block class %}post-list{% endblock %}
+
+{% block extra_content %}
+<div class="entry-summary">
+  <p>{{article['description'] if article['description']}}</p>
+</div>
+{% endblock %}

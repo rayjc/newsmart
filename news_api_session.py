@@ -9,7 +9,7 @@ class NewsApiSession(BaseApiSession):
     headlines_url = "https://newsapi.org/v2/top-headlines"
     articles_url = "https://newsapi.org/v2/everything"
 
-    def get_top_articles(self, country='us', category=None, size=None):
+    def get_top_articles(self, country='us', category=None, size=None, sources=[]):
         """
         Send API request to newsapi.org;
         return a list of article objects.
@@ -33,6 +33,9 @@ class NewsApiSession(BaseApiSession):
             params.update({"category": category})
         if size:
             params.update({"pageSize": size})
+        if sources:
+            params.update({"sources": ",".join(sources)})
+            del params['country']
         
         resp = self.get(NewsApiSession.headlines_url, params)
 

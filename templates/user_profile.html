@@ -22,13 +22,13 @@
     {% include 'form.html' %}
   </div>
 </div>
-<div class="row justify-content-md-center mt-5">
+<div class="row justify-content-md-center mt-5 pb-40">
   <div class="col-md-7 col-lg-6">
     <h2>Favorite Category</h2>
     <p class="lead">Please choose 3 of your favorite categories!</p>
     <form action="" id="category-form">
       <div class="row">
-        {% for category in categories %}
+        {% for category in category_objs %}
         <div class="col-md-6 col-lg-4">
           {% if category in g.user.categories %}
           <input type="checkbox" name="{{category.name}}" class="category-check" data-id="{{category.id}}" checked>
@@ -48,24 +48,28 @@
   </div>
 </div>
 
-<hr>
-<h2 class="text-center">Bookmarks</h2>
-<div>
-  <ul>
-    {% for article in bookmarks %}
-      <li>
-        <div>
-          <a target="_blank" rel="noopener noreferrer" href="{{article['url']}}">
-            {{article['title']}} - {{article['timestamp']}}
-          </a>
-        </div>
-        <div>
-          {% for tag in article.tags %}
-          <span class="badge badge-info">{{tag.keyword}}</span>
-          {% endfor %}
-        </div>
-      </li>
-    {% endfor %}
-  </ul>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Start Bookmark Block
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<div class="top-stories-block top-stories-one bg-gray ptb-80">
+  <div class="container">
+    <div class="row">
+      <div class="section-header">
+        <h2 class="section-title">Bookmarks</h2>
+      </div>
+      <!--./ section-header -->
+    </div>
+
+    <div class="row" id="saved-articles">
+      {% for article in bookmarks %}
+      <div class="col-lg-4 col-md-6">
+        {% include 'articles/article_bookmarked.html' %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
 </div>
+<!--~./ end bookmark block ~-->
+
 {% endblock %}

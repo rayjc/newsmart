@@ -28,12 +28,13 @@ class NewSmart(NewsApiSession, NLUApiSession):
         """
         related_articles = []
         if g.user:
-            # 5 most recent articles saved by user
+            # 4 most recent articles saved by user
             saves = (
                 Saves.query.filter(Saves.user_id == g.user.id)
                         .order_by(Saves.timestamp.desc())
-                        .limit(5).all()
+                        .limit(4).all()
             )
+            batch_size = 3 if len(saves) > 2 else 4
             for save in saves:
                 # extract tags
                 tags = [tag.keyword for tag in save.article.tags]
@@ -43,8 +44,8 @@ class NewSmart(NewsApiSession, NLUApiSession):
                 # compose a phrase; tags include concepts followed by keywords
                 phrase = " ".join(tags)
                 # search articles based on phrase
-                articles = self.search_articles(phrase, size=3,
-                                                exclude_domains=NewSmart.video_urls)
+                articles = self.search_articles(phrase, size=batch_size,
+                                                exclude_domains=NewSmart.video_urls) or []
                 related_articles.extend(articles)
         return related_articles
 
