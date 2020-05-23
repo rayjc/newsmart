@@ -54,7 +54,7 @@ def home_view():
     """
     top_articles = newsmart.get_top_articles()
     bookmarked_urls = newsmart.get_bookmarked_urls()
-    category_map = newsmart.get_user_category_articles()
+    category_map = newsmart.get_user_category_articles(limit=12)
     related_articles = newsmart.get_recommended_articles()
     bookmark_map = newsmart.get_bookmark_url_to_id()
 
@@ -211,7 +211,7 @@ def user_profile_view():
 
     return render_template(
         "user_profile.html", form=form, submit_button="Update User",
-        bookmarks=bookmarks, bookmark_map=bookmark_map, categories_objs=categories,
+        bookmarks=bookmarks, bookmark_map=bookmark_map, category_objs=categories,
         categories=NEWS_CATEGORIES,
     )
 

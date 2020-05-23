@@ -6,29 +6,15 @@
 
 {% if g.user %}
 
-<h1 class="text-center">Your favorite categories</h1>
-<div id="category-articles">
-  {% for category, articles in category_map.items() %}
-  <div>
-    <h2>{{category|capitalize}}</h2>
-    <ul>
-      {% for article in articles %}
-        {% include 'articles/article_item.html' %}
-      {% endfor %}
-    </ul>
-  </div>
-  {% endfor %}
-</div>
-
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Start Frontpage Related Posts
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-<div class="frontpage-popular-posts pb-80">
+<div class="frontpage-popular-posts ptb-80">
   <div class="container">
     <div class="row">
       <div class="col-12">
         <div class="section-header">
-          <h2 class="section-title">Popular News</h2>
+          <h2 class="section-title">Recommended For You</h2>
         </div>
         <!--~./ end section header ~-->
       </div>
@@ -38,9 +24,9 @@
       <div class="col-12">
         <div id="popular-posts-carousel" class="owl-carousel carousel-nav-circle">
           {% for article in related_articles %}
-            {% if article.url not in bookmarked_urls %}
-              {% include 'articles/article_carousel.html' %}
-            {% endif %}
+          {% if article.url not in bookmarked_urls %}
+          {% include 'articles/article_grid.html' %}
+          {% endif %}
           {% endfor %}
         </div>
       </div>
@@ -49,13 +35,75 @@
 </div>
 <!--~./End frontpage related posts ~-->
 
+
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Start Category Blocks
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<div class="top-stories-block top-stories-one bg-gray ptb-80">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="section-header">
+          <h2 class="section-title">Your Favorite Categories</h2>
+        </div>
+      </div>
+      <!--./ section-header -->
+
+      <div class="col-lg-6">
+        <div class="filter-tab-area">
+          <ul class="nav nav-tabs" role="tablist">
+            {% for category in category_map.keys()%}
+            <li>
+              <a class="{{'active' if loop.index == 1}}" data-toggle="tab" href="#{{category}}-tab" role="tab">{{category|capitalize}}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <!--~./ end filter tab area ~-->
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="tab-content filter-tab-content">
+          {% for category, articles in category_map.items() %}
+          <!--~~~~~ Start Tab Pane ~~~~~-->
+          <div class="tab-pane fade{{' show active' if loop.index == 1}}" id="{{category}}-tab" role="tabpanel">
+            <div class="row">
+              {% for article in articles[:3] %}
+              <!--~~~~~ Start Post ~~~~~-->
+              <div class="col-lg-4 col-md-6">
+                {% include 'articles/article_grid.html' %}
+              </div>
+              <!--~./ end post ~-->
+              {% endfor %}
+
+              {% for article in articles[3:] %}
+              <!--~~~~~ Start Post ~~~~~-->
+              <div class="col-lg-4 col-md-6">
+                {% include 'articles/article_post_small.html' %}
+              </div>
+              <!--~./ end post ~-->
+              {% endfor %}
+            </div>
+          </div>
+          <!--~./ end tab pane ~-->
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!--~./ end category blocks ~-->
+
 {% endif %}
 
 
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Start Main Wrapper
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-<div class="main-wrapper ptb-40">
+<div class="main-wrapper ptb-80">
   <div class="container">
     <div class="row">
       <div class="col-lg-9">
