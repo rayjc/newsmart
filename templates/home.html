@@ -69,7 +69,9 @@
             </div>
             <!--~./ end section header ~-->
             {% for article in top_articles %}
-              {% include 'article_post.html' %}
+              <div class="col-12 load-post">
+                {% include 'article_post.html' %}
+              </div>
             {% endfor %}
 
           </div>

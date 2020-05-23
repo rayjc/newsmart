@@ -20,8 +20,11 @@
               </div>
             </div>
             <!--~./ end section header ~-->
+            
             {% for article in articles %}
-              {% include 'article_post.html' %}
+              <div class="col-12 load-post">
+                {% include 'article_post.html' %}
+              </div>
             {% endfor %}
 
           </div>
