@@ -3,18 +3,50 @@
 {% block title %} - {{category|capitalize}} {% endblock %}
 
 {% block content %}
-<h1 class="text-center">{{category|capitalize}}</h1>
-<div>
-  <ul>
-    {% for article in articles %}
-    <li>
-      <a target="_blank" rel="noopener noreferrer" href="{{article['url']}}">{{article['title']}} -
-        {{article['publishedAt']}}</a>
-    </li>
-    {% endfor %}
-  </ul>
-</div>
 
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Start Main Wrapper
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<div class="main-wrapper ptb-80 style-two">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <!--~~~~~ Start Site Main ~~~~~-->
+        <main class="site-main">
+          <div class="col-12">
+            <div class="section-header">
+              <h2 class="section-title">{{category|capitalize}}</h2>
+            </div>
+          </div>
+
+          <div class="row" id="category-articles">
+            {% for article in articles %}
+              <!--~~~~~ Start Post ~~~~~-->
+              <div class="col-md-6 col-lg-4 load-post">
+                  {% include 'articles/article_grid.html' %}
+              </div>
+                <!--~./ end post ~-->
+            {% endfor %}
+          </div>
+        </main>
+        <!--~./ end site main ~-->
+
+        <!--~~~~~ Load More Area ~~~~~-->
+        <div class="load-more-area text-center">
+          <button class="btn btn-load-more loadmore">
+            <i class="fa fa-spinner"></i>
+            Load More
+          </button>
+          <!--/#loadmore-->
+          <span class="no-posts">No more posts</span>
+        </div>
+        <!--/.load-more-area-->
+
+      </div>
+    </div>
+  </div>
+</div>
+<!--~./ end main wrapper ~-->
 
 <hr>
 <div class="text-center">
