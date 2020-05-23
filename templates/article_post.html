@@ -7,20 +7,13 @@
 		<div class="entry-thumb">
 			<figure class="thumb-wrap">
 				<a href="{{article['url']}}">
-					<img src="{{article['urlToImage'] if article['urlToImage']}}" alt="post">
+					<img src="{{article['urlToImage'] if article['urlToImage'] else url_for('static', filename='images/question-mark.jpg')}}" alt="post">
 				</a>
 				{% if g.user %}
-				<!-- <div class="featured-badge-list">
-					<a class="trending" href="#">
-						<span class="fab fa-gripfire"></span>
-					</a>
-				</div> -->
 				<div class="featured-badge-list">
 					{% if article.url in bookmarked_urls %}
 						<a class="trending btn-bookmark" href="#" data-bookmark-id="{{bookmark_map[article.url]}}">
-						<!-- <button class="trending btn-bookmark" data-bookmark-id="{{bookmark_map[article.url]}}"> -->
 							<span class="fas fa-bookmark"></span>
-						<!-- </button> -->
 						</a>
 					{% else %}
 						<a class="trending btn-bookmark" href="#">

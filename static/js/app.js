@@ -12,7 +12,7 @@ $(function (){
 
   $topDiv.on("click", "a.btn-bookmark", bookmarkHandler);
   $categoryDiv.on("click", "button.btn-bookmark", bookmarkHandler);
-  $relatedDiv.on("click", "button.btn-bookmark", bookmarkHandler);
+  $relatedDiv.on("click", "a.btn-bookmark", bookmarkHandler);
   $searchDiv.on("click", "a.btn-bookmark", bookmarkHandler);
   $categoryForm.on("submit", putCategoryHandler);
   $categoryForm.on("click", ".category-check", function() {
