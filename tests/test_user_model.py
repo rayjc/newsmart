@@ -24,8 +24,9 @@ from models import User, Saves, Article, Category, UserCategory, db
 # once for all tests --- in each test, we'll delete the data
 # and create fresh new clean test data
 
-app.testing = True
 db.create_all()
+
+app.testing = True
 
 
 class UserModelTestCase(TestCase):
