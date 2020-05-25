@@ -9,7 +9,6 @@ import os
 import copy
 import datetime
 import logging
-from contextlib import contextmanager
 from unittest import TestCase
 
 from flask import appcontext_pushed, g
@@ -36,15 +35,6 @@ db.create_all()
 app.testing = True
 
 logging.disable(logging.CRITICAL)   # Disable logging
-
-
-@contextmanager
-def user_set(app, user):
-    def handler(sender, **kwargs):
-        g.user = user
-
-    with appcontext_pushed.connected_to(handler, app):
-        yield
 
 
 class ArticleApiTestCase(TestCase):
