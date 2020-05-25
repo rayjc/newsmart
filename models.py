@@ -208,7 +208,7 @@ class Tag(db.Model):
             db.session.commit()
         except IntegrityError:
             logger.warning(
-                f"Cannot add {new_tag} to database; URL already exists."
+                f"Cannot add {new_tag} to database; keyword already exists."
             )
             db.session.rollback()
             return None
