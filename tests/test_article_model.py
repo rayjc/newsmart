@@ -1,4 +1,4 @@
-"""User model tests."""
+"""Article model tests."""
 
 # from newsmart/, run this test like:
 #   python -m unittest tests/test_article_model.py
