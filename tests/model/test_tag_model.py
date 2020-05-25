@@ -1,8 +1,8 @@
 """Tag model tests."""
 
 # from newsmart/, run this test like:
-#   python -m unittest tests/test_tag_model.py
-#   python -m unittest discover tests
+#   python -m unittest tests/model/test_tag_model.py
+#   python -m unittest discover tests/model/
 # Note: This is necessary to avoid relative/absolute import based on path.
 
 import os
@@ -20,7 +20,7 @@ os.environ['DATABASE_URL'] = "postgresql:///newsmart-test"
 
 # Now we can import app
 from app import app
-from models import Category, User, UserCategory, db
+from models import Article, Tag, ArticleTag, db
 
 # Create our tables (we do this here, so we only create the tables
 # once for all tests --- in each test, we'll delete the data
@@ -38,55 +38,56 @@ class ArticleModelTestCase(TestCase):
     def setUp(self):
         """Remove existing tables, create sample user"""
 
-        Category.query.delete()
-        User.query.delete()
+        Tag.query.delete()
+        Article.query.delete()
         # intermediate tables should have been removed due to on delete cascade
 
-        self.category = Category(name="Test")
+        self.tag = Tag(keyword="testing")
 
-        db.session.add(self.category)
+        db.session.add(self.tag)
         db.session.commit()
 
     def tearDown(self):
         db.session.rollback()
 
     def test_model(self):
-        self.assertIs(self.category, Category.query.get(self.category.id))
+        self.assertIs(self.tag, Tag.query.get(self.tag.id))
 
-        self.assertEqual(len(self.category.users_categories), 0)
-        self.assertEqual(len(self.category.users), 0)
+        self.assertEqual(len(self.tag.articles_tags), 0)
+        self.assertEqual(len(self.tag.articles), 0)
 
     def test_relationship_articles(self):
-        user = User.register(
-            "test", "raw_password", "test@test.com",
-            "Test", "User"
+        article = Article.new(
+            "Secret", "Bruce Wayne is the Batman",
+            "http://www.bing.com",
+            "The Joker"
         )
-        user_category = UserCategory.new(user.id, self.category.id)
+        article_tag = ArticleTag.new(article.id, self.tag.id)
 
         with self.subTest():
-            self.assertIn(user, self.category.users)
+            self.assertIn(article, self.tag.articles)
 
         with self.subTest():
-            self.assertIn(user_category, self.category.users_categories)
+            self.assertIn(article_tag, self.tag.articles_tags)
 
     def test_news_method(self):
-        category = Category.new("DC")
+        tag = Tag.new("DC")
 
-        self.assertIs(category, Category.query.get(category.id))
+        self.assertIs(tag, Tag.query.get(tag.id))
 
         # create request context for flash messages
         with app.test_request_context() as ctx:
-            dup_category = Category.new("DC")
-            self.assertIsNone(dup_category)
+            dup_tag = Tag.new("DC")
+            self.assertIsNone(dup_tag)
 
     def test_serialize_method(self):
-        data = self.category.serialize()
+        data = self.tag.serialize()
 
         self.assertIsInstance(data, dict)
         self.assertDictEqual(
             data,
             {
-                "id": self.category.id,
-                "name": self.category.name,
+                "id": self.tag.id,
+                "keyword": self.tag.keyword,
             }
         )

@@ -1,8 +1,8 @@
 """Article model tests."""
 
 # from newsmart/, run this test like:
-#   python -m unittest tests/test_article_model.py
-#   python -m unittest discover tests
+#   python -m unittest tests/model/test_article_model.py
+#   python -m unittest discover tests/model/
 # Note: This is necessary to avoid relative/absolute import based on path.
 
 import os
