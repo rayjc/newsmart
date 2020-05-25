@@ -37,7 +37,7 @@ app.testing = True
 logging.disable(logging.CRITICAL)   # Disable logging
 
 
-class ArticleApiTestCase(TestCase):
+class BookmarkApiTestCase(TestCase):
 
     def setUp(self):
         """Create test client, add sample data."""
